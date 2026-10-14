@@ -363,7 +363,7 @@ git add -A &amp;&amp; git commit -m "Describe the change" &amp;&amp; git push or
     <tr><td>Experience</td><td><code>/experience</code></td><td>Timeline 1968 – today, original records, sectors (infrastructure, government, private)</td></tr>
     <tr><td>Machineries</td><td><code>/machineries</code></td><td>Fleet of 7 machinery types with filters</td></tr>
     <tr><td>About Us</td><td><code>/about</code></td><td>Three generations, original records, company details</td></tr>
-    <tr><td>Contact</td><td><code>/contact</code></td><td>Enquiry form, call, WhatsApp, email</td></tr>
+    <tr><td>Contact</td><td><code>/contact</code></td><td>Enquiry form (sent to Netlify Forms + email), call, WhatsApp, email</td></tr>
     <tr><td>Not found</td><td>any other address</td><td>Friendly 404 page</td></tr>
   </table>
 
@@ -422,17 +422,45 @@ git add -A &amp;&amp; git commit -m "Describe the change" &amp;&amp; git push or
   <p>Full list with links: <code>public/images/stock/CREDITS.md</code>. Stock images are marked "Representative image" on the site.</p>
 </section>
 
-<!-- ============================== 9. STATUS ============================== -->
+<!-- ============================== 9. CONTACT FORM ============================== -->
+<section class="break">
+  <span class="eyebrow">Enquiries</span>
+  <h2><span class="num">09</span>Contact form and enquiries</h2>
+  <p>The enquiry form on the Contact page (<code>/contact</code>) sends every submission to <b>Netlify Forms</b>. Each enquiry is saved in the Netlify dashboard and also emailed to the company.</p>
+  <div class="card brand">
+    <dl class="kv">
+      <dt>View enquiries</dt><dd>app.netlify.com/projects/doonbuildersofficial/forms → form <b>contact</b></dd>
+      <dt>Email alerts to</dt><dd><b>doonbuilders.digital@gmail.com</b> — one email per enquiry, sent by Netlify</dd>
+      <dt>Netlify login</dt><dd>doonbuilders.digital@gmail.com (Doon Builders account)</dd>
+      <dt>Form name</dt><dd><code>contact</code></dd>
+      <dt>Fields</dt><dd>Name*, Company, Phone*, Email*, Project Type, Project Location, Message &nbsp;(* required)</dd>
+    </dl>
+  </div>
+  <table>
+    <tr><th style="width:42mm">Setting</th><th>Where / value</th></tr>
+    <tr><td>Form provider</td><td>Netlify environment variable <code>VITE_CONTACT_PROVIDER = netlify</code></td></tr>
+    <tr><td>Form detection</td><td>Enabled — Netlify → Forms</td></tr>
+    <tr><td>Email notification</td><td>Netlify → Project configuration → Notifications → Form submission notifications</td></tr>
+    <tr><td>Form definition in code</td><td>Hidden form in <code>index.html</code>; visible form in <code>src/components/ContactForm.jsx</code>; sending logic in <code>src/services/contactService.js</code></td></tr>
+    <tr><td>Spam protection</td><td>Hidden honeypot field (<code>bot-field</code>) + Netlify spam filter</td></tr>
+    <tr><td>Monthly limit</td><td>100 submissions per month on Netlify's free plan</td></tr>
+    <tr><td>Other ways to reach</td><td>Call / WhatsApp +91 89230 76963 (buttons on every page)</td></tr>
+  </table>
+  <p>If an email alert does not arrive, check the Spam / Promotions folder and mark the Netlify email as "Not spam".</p>
+</section>
+
+<!-- ============================== 10. STATUS ============================== -->
 <section class="break">
   <span class="eyebrow">Status</span>
-  <h2><span class="num">09</span>Current status</h2>
+  <h2><span class="num">10</span>Current status</h2>
   <table>
     <tr><th>Item</th><th style="width:26mm">Status</th><th>Note</th></tr>
     <tr><td>Code on GitHub (doonbuildersdigital/doonbuilders)</td><td><span class="status ok">Done</span></td><td>Branch <code>main</code></td></tr>
     <tr><td>Netlify deploy + auto-deploy from GitHub</td><td><span class="status ok">Done</span></td><td>Every push to <code>main</code> goes live</td></tr>
     <tr><td>Site protection removed (public access)</td><td><span class="status ok">Done</span></td><td>—</td></tr>
     <tr><td>DNS records at BigRock (A + CNAME)</td><td><span class="status ok">Done</span></td><td>Email records untouched</td></tr>
-    <tr><td>SSL certificate (https://doonbuilders.in)</td><td><span class="status wait">In progress</span></td><td>Issued by Netlify once DNS has updated on all BigRock servers</td></tr>
+    <tr><td>SSL certificate (https://doonbuilders.in)</td><td><span class="status ok">Done</span></td><td>Free Let's Encrypt certificate, renewed automatically by Netlify</td></tr>
+    <tr><td>Contact form (Netlify Forms)</td><td><span class="status ok">Done</span></td><td>Enquiries saved in Netlify and emailed to doonbuilders.digital@gmail.com</td></tr>
   </table>
 
   <div class="foot">
