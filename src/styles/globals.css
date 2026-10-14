@@ -1,0 +1,444 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Tokens                                                              */
+/* ------------------------------------------------------------------ */
+:root {
+  --brand: #c8102e;
+  --brand-deep: #a50e27;
+  --charcoal: #181a1d;
+
+  /* Theme colours as RGB channels (used by Tailwind with opacity modifiers) */
+  --ink: 17 18 20;
+  --paper: 246 247 249;
+  --surface: 255 255 255;
+  --mist: 230 232 236;
+  --steel: 119 123 128;
+  --steel-dark: 85 89 94;
+  --line: rgba(20, 20, 20, 0.12);
+  --brand-text: 200 16 46;
+  --scrollbar: #b9bab7;
+  color-scheme: light;
+
+  /* Horizontal page gutter — mobile 20px, tablet 32px, desktop 48–80px */
+  --gutter: 20px;
+  --nav-h: 68px;
+  /* Blessing strip above the navbar — always visible, part of the fixed header */
+  --blessing-h: 44px;
+  --header-h: calc(var(--nav-h) + var(--blessing-h));
+  --ease-arch: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark theme */
+:root[data-theme='dark'] {
+  --ink: 236 237 240;
+  --paper: 13 14 16;
+  --surface: 24 26 29;
+  --mist: 44 47 52;
+  --steel: 148 153 160;
+  --steel-dark: 178 183 190;
+  --line: rgba(255, 255, 255, 0.11);
+  --brand-text: 240 84 104;
+  --scrollbar: #3a3d42;
+  color-scheme: dark;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --blessing-h: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 48px;
+    --nav-h: 76px;
+    --blessing-h: 52px;
+  }
+}
+/* Short screens (phones in landscape): keep the fixed header compact */
+@media (max-height: 500px) {
+  :root {
+    --nav-h: 60px;
+    --blessing-h: 36px;
+  }
+}
+@media (min-width: 1440px) {
+  :root {
+    --gutter: 80px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: rgb(var(--paper));
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
+
+  body {
+    @apply bg-paper font-sans text-[15px] leading-relaxed text-ink md:text-base;
+    transition:
+      background-color 0.4s var(--ease-arch),
+      color 0.4s var(--ease-arch);
+    overflow-x: clip;
+    min-height: 100vh;
+  }
+
+  img,
+  picture,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+  }
+
+  .on-dark :focus-visible,
+  .bg-night :focus-visible,
+  .bg-charcoal :focus-visible {
+    outline-color: #fff;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  /* Native scrollbar — slim and neutral */
+  @media (pointer: fine) {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgb(var(--paper));
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--scrollbar);
+      border: 3px solid rgb(var(--paper));
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(var(--steel));
+    }
+  }
+}
+
+/* Lenis recommended styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped,
+html.is-scroll-locked {
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/* Components                                                          */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section-y {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Eyebrow / technical label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-brand/15 bg-brand/[0.06] px-3.5 py-2 text-[11px] font-semibold uppercase leading-none tracking-[0.14em] text-brand;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply block h-1.5 w-1.5 shrink-0 rounded-full bg-current;
+  }
+  .eyebrow-on-dark {
+    @apply border-white/25 bg-white/10 text-white backdrop-blur-sm;
+  }
+
+  .meta-label {
+    @apply text-[11px] font-medium uppercase leading-none tracking-label text-steel-dark;
+  }
+  .on-dark .meta-label {
+    @apply text-white/55;
+  }
+
+  /* Display type */
+  .display-xl {
+    @apply font-bold;
+    font-size: clamp(2rem, 4.8vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+
+  .h-section {
+    @apply font-bold;
+    font-size: clamp(1.75rem, 3.6vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .h-card {
+    @apply font-bold;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Cards — white surface, soft shadow. Interactive cards lift and    */
+  /* zoom slightly on hover, and zoom a touch more while pressed.      */
+  /* Put .card-interactive on an inner element, never on one animated */
+  /* by data-reveal (GSAP's inline transform would win).               */
+  /* ---------------------------------------------------------------- */
+  .card {
+    @apply relative overflow-hidden rounded-2xl bg-surface shadow-card ring-1 ring-ink/[0.06];
+  }
+  .card-interactive {
+    @apply transition-[transform,box-shadow] duration-500 ease-arch;
+    transform: translateZ(0);
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (hover: hover) {
+    .card-interactive:hover {
+      @apply shadow-card-hover;
+      transform: translateY(-6px) scale(1.012);
+    }
+  }
+  .card-interactive:active {
+    @apply shadow-card-press duration-200;
+    transform: translateY(-4px) scale(1.03);
+  }
+  .card-interactive:focus-visible {
+    @apply shadow-card-hover;
+  }
+  /* Image inside an interactive card zooms gently */
+  .card-zoom {
+    @apply transition-transform duration-[1200ms] ease-arch;
+  }
+  .card-interactive:hover .card-zoom,
+  .group:hover .card-zoom {
+    transform: scale(1.06);
+  }
+
+  /* Light dotted/grid backdrop for hero areas */
+  .bg-blueprint {
+    background-image:
+      radial-gradient(circle at 85% 0%, rgba(200, 16, 46, 0.07), transparent 42%),
+      linear-gradient(rgb(var(--ink) / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--ink) / 0.045) 1px, transparent 1px);
+    background-size: auto, 44px 44px, 44px 44px;
+    background-position: 0 0, -1px -1px, -1px -1px;
+  }
+
+  .lead {
+    @apply max-w-prose text-base leading-[1.75] text-steel-dark md:text-lg;
+  }
+  .on-dark .lead {
+    @apply text-white/70;
+  }
+
+  /* Masked text lines (animated by data-reveal="lines") */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    /* Room for descenders and the line-height < 1 headings */
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+  .line-inner {
+    display: block;
+    will-change: transform;
+  }
+
+  /* Underline reveal for text links */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.5s var(--ease-arch);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible,
+  .link-underline[aria-current='page'] {
+    background-position: 0 100%;
+    background-size: 100% 1px;
+  }
+
+  /* Architectural grid lines used as subtle background structure */
+  .grid-lines {
+    background-image: linear-gradient(to right, rgb(var(--ink) / 0.05) 1px, transparent 1px);
+    background-size: calc((100% - 2 * var(--gutter)) / 4) 100%;
+    background-position: var(--gutter) 0;
+  }
+
+  /* Image placeholder drawing (no photograph supplied yet) */
+  .placeholder-grid {
+    background-color: rgb(var(--mist) / 0.7);
+    background-image:
+      linear-gradient(rgb(var(--ink) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--ink) / 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Page entrance (route change). Fill-mode backwards leaves no transform behind,
+     so fixed/pinned descendants keep working after the animation. */
+  .page-enter {
+    animation: page-enter 0.6s var(--ease-arch) backwards;
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Three Generations — pinned mode is switched on by JS (desktop only) */
+/* ------------------------------------------------------------------ */
+.generations.is-pinned {
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+.generations.is-pinned .gen-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.generations.is-pinned .gen-scene {
+  position: absolute;
+  inset: 0 var(--gutter);
+  padding-block: 2rem;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Intro — blueprint drawing of a building under construction          */
+/* ------------------------------------------------------------------ */
+/* Strokes start undrawn (pathLength="1") so nothing flashes before GSAP runs. */
+.intro [data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.intro-ink {
+  stroke: rgb(var(--ink) / 0.88);
+}
+.intro-faint {
+  stroke: rgb(var(--steel));
+}
+.intro-brand {
+  stroke: var(--brand);
+}
+.intro-glass {
+  fill: rgb(var(--ink) / 0.045);
+  stroke: rgb(var(--ink) / 0.55);
+  stroke-width: 0.8;
+}
+.intro-solid {
+  fill: rgb(var(--ink) / 0.85);
+}
+.intro-dash {
+  fill: none;
+  stroke: rgb(var(--steel));
+  stroke-width: 0.7;
+  stroke-dasharray: 3 3;
+}
+
+/* ------------------------------------------------------------------ */
+/* Lightbox                                                            */
+/* ------------------------------------------------------------------ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.fade-up {
+  animation: fade-up 0.5s var(--ease-arch);
+}
+
+@keyframes lightbox-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes lightbox-zoom {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+.lightbox-fade {
+  animation: lightbox-fade 0.35s var(--ease-arch);
+}
+.lightbox-zoom {
+  animation: lightbox-zoom 0.5s var(--ease-arch);
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Doon Builders | Infrastructure &amp; Construction Since 1968</title>
+    <meta
+      name="description"
+      content="Doon Builders is a three-generation construction and infrastructure company with experience across government infrastructure, roads, bridges, dams, hospitality, healthcare and private development."
+    />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Apply the saved (or device) colour theme before first paint to avoid a flash. Mirrors src/lib/theme.js. -->
+    <script>
+      (function () {
+        var theme;
+        try {
+          theme = localStorage.getItem('db-theme');
+        } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+        if (theme === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#181a1d');
+      })();
+    </script>
+    <meta name="robots" content="index, follow" />
+
+    <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Doon Builders" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="Doon Builders | Infrastructure &amp; Construction Since 1968" />
+    <meta
+      property="og:description"
+      content="Three generations. Decades of experience. Projects built to last."
+    />
+    <meta property="og:image" content="/og/og-default.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Doon Builders | Infrastructure &amp; Construction Since 1968" />
+    <meta
+      name="twitter:description"
+      content="Three generations. Decades of experience. Projects built to last."
+    />
+    <meta name="twitter:image" content="/og/og-default.jpg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@600;700&family=Poppins:wght@400;500;600;700;800&display=swap"
+    />
+
+    <!-- Organization schema: verified details only. Add address/url/logo once supplied. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Doon Builders",
+        "foundingDate": "1968",
+        "telephone": "+91-8923076963",
+        "email": "support@doonbuilders.com"
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <div style="padding:24px;font-family:sans-serif">
+        Doon Builders — Building India Since 1968. Call 89230 76963 or email support@doonbuilders.com.
+      </div>
+    </noscript>
+    <div id="root"></div>
+
+    <!-- Netlify Forms detection (used only when VITE_CONTACT_PROVIDER=netlify). Safe to keep otherwise. -->
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="text" name="company" />
+      <input type="tel" name="phone" />
+      <input type="email" name="email" />
+      <input typA0AAAe="text" name="projectType" />
+      <input type="text" name="projectLocation" />
+      <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

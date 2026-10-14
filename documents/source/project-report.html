@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Doon Builders Website — Project Report & Security Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm; }
+  :root {
+    --brand: #C8102E; --brand-deep: #A50E27; --ink: #111214; --steel: #55595E;
+    --muted: #777B80; --line: #E3E5E9; --paper: #F6F7F9;
+    --pass: #1F8A4C; --note: #B7791F; --act: #C8102E; --na: #777B80;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: Poppins, 'Segoe UI', Arial, sans-serif; color: var(--ink); font-size: 9.2pt; line-height: 1.5; background: #fff; }
+  h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; }
+  h2 { font-size: 19pt; font-weight: 700; margin-bottom: 4mm; padding-top: 1mm; }
+  h2 .num { color: var(--brand); margin-right: 3mm; }
+  h3 { font-size: 11.5pt; font-weight: 600; margin: 6mm 0 2.5mm; }
+  p { margin: 0 0 2.5mm; }
+  code, .mono { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8.2pt; }
+  code { background: var(--paper); padding: 0.3mm 1.2mm; border-radius: 1mm; }
+  .section { margin-top: 9mm; }
+  .section.newpage { break-before: page; margin-top: 0; }
+  h2, h3 { break-after: avoid; }
+  .swatches, .tree, .theme-pair { break-before: avoid; }
+  .avoid { break-inside: avoid; }
+  .lead { font-size: 10.5pt; color: var(--steel); max-width: 165mm; }
+  .eyebrow { display: inline-block; font-size: 7.5pt; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand); background: rgba(200,16,46,0.07); border: 1px solid rgba(200,16,46,0.18); border-radius: 99px; padding: 1.2mm 3mm; margin-bottom: 3mm; }
+
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 8.8pt; }
+  th { text-align: left; font-weight: 600; font-size: 7.6pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel); border-bottom: 1.5px solid var(--ink); padding: 1.8mm 2mm; }
+  td { border-bottom: 1px solid var(--line); padding: 1.4mm 2mm; vertical-align: top; }
+  tr { break-inside: avoid; }
+
+  .badge { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.7mm 2.2mm; border-radius: 99px; color: #fff; white-space: nowrap; }
+  .b-pass { background: var(--pass); } .b-note { background: var(--note); } .b-act { background: var(--act); } .b-na { background: var(--na); }
+
+  /* Cover */
+  .cover { height: 263mm; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .cover-top { display: flex; align-items: center; gap: 4mm; }
+  .bar { width: 2mm; height: 12mm; background: var(--brand); }
+  .wordmark { font-weight: 800; letter-spacing: 0.08em; color: var(--brand); font-size: 14pt; line-height: 1; }
+  .tag { font-size: 6.5pt; letter-spacing: 0.34em; text-transform: uppercase; color: var(--steel); margin-top: 1.5mm; }
+  .cover h1 { font-size: 36pt; font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; }
+  .cover h1 span { color: var(--brand); }
+  .cover .grid-bg { position: absolute; inset: 40mm 0 60mm; background-image: linear-gradient(rgba(17,18,20,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(17,18,20,0.05) 1px, transparent 1px); background-size: 10mm 10mm; z-index: -1; }
+  .meta-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1.5px solid var(--ink); }
+  .meta-row div { padding: 3mm 3mm 0 0; }
+  .meta-row small { display: block; font-size: 7pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .meta-row b { font-size: 10pt; font-weight: 600; }
+
+  /* Stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 4mm 0 5mm; }
+  .tile { border: 1px solid var(--line); border-radius: 2.5mm; padding: 3.5mm; }
+  .tile b { display: block; font-size: 18pt; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+  .tile span { font-size: 7.8pt; color: var(--steel); }
+
+  /* Pipeline */
+  .pipe { display: grid; grid-template-columns: 7mm 1fr auto; gap: 0 3mm; align-items: center; }
+  .pipe .step { border-bottom: 1px solid var(--line); padding: 2.2mm 0; display: contents; }
+  .pipe .n { font-weight: 700; color: var(--brand); font-size: 9pt; padding: 2mm 0; border-bottom: 1px solid var(--line); }
+  .pipe .t { padding: 2mm 0; border-bottom: 1px solid var(--line); }
+  .pipe .t b { font-weight: 600; }
+  .pipe .t small { display: block; color: var(--steel); font-size: 8pt; }
+  .pipe .s { padding: 2mm 0; border-bottom: 1px solid var(--line); text-align: right; }
+
+  /* Callouts */
+  .callout { border-left: 1.2mm solid var(--brand); background: rgba(200,16,46,0.05); padding: 3mm 4mm; border-radius: 0 2mm 2mm 0; margin: 3mm 0 4mm; break-inside: avoid; }
+  .callout.ok { border-color: var(--pass); background: rgba(31,138,76,0.06); }
+  .callout.warn { border-color: var(--note); background: rgba(183,121,31,0.07); }
+  .callout b:first-child { display: block; margin-bottom: 1mm; }
+
+  /* Audit step block */
+  .audit { border: 1px solid var(--line); border-radius: 2.5mm; padding: 3.5mm 4mm 2mm; margin: 0 0 4mm; break-inside: avoid; }
+  .audit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2mm; }
+  .audit-head h3 { margin: 0; }
+  .audit-head h3 span { color: var(--brand); margin-right: 2mm; }
+  .audit ul { margin: 0 0 2mm; padding-left: 4.5mm; }
+  .audit li { margin-bottom: 1mm; }
+  .audit .fix { color: var(--steel); font-size: 8.6pt; }
+  .audit .fix b { color: var(--ink); }
+
+  /* Colour swatches */
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 2mm 0 4mm; }
+  .sw { border: 1px solid var(--line); border-radius: 2.5mm; overflow: hidden; break-inside: avoid; }
+  .chip { height: 12mm; position: relative; }
+  .chip.check { background-image: linear-gradient(45deg,#ddd 25%,transparent 25%,transparent 75%,#ddd 75%), linear-gradient(45deg,#ddd 25%,transparent 25%,transparent 75%,#ddd 75%); background-size: 3mm 3mm; background-position: 0 0, 1.5mm 1.5mm; }
+  .chip.check i { position: absolute; inset: 0; }
+  .sw .info { padding: 2mm 2.5mm 2.4mm; }
+  .sw .info b { display: block; font-size: 8.6pt; font-weight: 600; }
+  .sw .info code { background: none; padding: 0; font-size: 7.6pt; color: var(--steel); }
+  .sw .info span { display: block; font-size: 7.2pt; color: var(--muted); line-height: 1.35; margin-top: 0.8mm; }
+
+  .theme-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 3mm 0 4mm; }
+  .theme-demo { border-radius: 3mm; padding: 5mm; border: 1px solid var(--line); break-inside: avoid; }
+  .theme-demo .card { border-radius: 2.5mm; padding: 4mm; margin-top: 3mm; }
+  .theme-demo .btn { display: inline-block; background: #C8102E; color: #fff; border-radius: 99px; padding: 1.6mm 4.5mm; font-weight: 600; font-size: 8.5pt; margin-top: 3mm; }
+
+  .tree { background: var(--paper); border-radius: 2.5mm; padding: 4mm 5mm; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 8pt; line-height: 1.6; white-space: pre; margin: 2mm 0 4mm; break-inside: avoid; }
+  pre.snippet { background: #111214; color: #ECEDF0; border-radius: 2.5mm; padding: 4mm 5mm; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 7.3pt; line-height: 1.55; white-space: pre-wrap; word-break: break-all; margin: 2mm 0 4mm; break-inside: avoid; }
+  pre.snippet .c { color: #9499A0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .type-sample { border-bottom: 1px solid var(--line); padding: 2.5mm 0; display: grid; grid-template-columns: 52mm 1fr; align-items: baseline; gap: 4mm; }
+  .type-sample small { font-size: 7.6pt; color: var(--steel); }
+  .footer-note { color: var(--muted); font-size: 7.6pt; margin-top: 6mm; }
+</style>
+</head>
+<body>
+
+<!-- ================================================================ COVER -->
+<section class="cover">
+  <div class="grid-bg"></div>
+  <div class="cover-top">
+    <div class="bar"></div>
+    <div><div class="wordmark">DOON BUILDERS</div><div class="tag">Since 1968</div></div>
+  </div>
+
+  <div>
+    <div class="eyebrow">Website project report</div>
+    <h1>Complete project report<br />&amp; <span>security audit</span></h1>
+    <p class="lead" style="margin-top:6mm">What the Doon Builders website is built with, how it is organised, every colour, font and design token it uses, and the result of an 11-step security and release check.</p>
+  </div>
+
+  <div class="meta-row">
+    <div><small>Project</small><b>doon-builders v1.0.0</b></div>
+    <div><small>Type</small><b>Static React website</b></div>
+    <div><small>Report date</small><b>9 October 2026</b></div>
+    <div><small>Release status</small><b style="color:#C8102E">Not ready to deploy</b></div>
+  </div>
+</section>
+
+<!-- ================================================================ 1. SUMMARY -->
+<section class="section newpage">
+  <h2><span class="num">01</span>Summary</h2>
+  <p class="lead">The website is a well-built static React site with no server and no database. The code is clean and safe: no secrets, no unsafe HTML, and no vulnerable libraries reach the browser. It is not ready to go live, because the code has no backup, the domain has no HTTPS and no security headers are set.</p>
+
+  <div class="tiles">
+    <div class="tile"><b>73</b><span>source files in <code>src/</code></span></div>
+    <div class="tile"><b>7,131</b><span>lines of code</span></div>
+    <div class="tile"><b>10</b><span>pages (routes)</span></div>
+    <div class="tile"><b>181 KB</b><span>JavaScript sent to visitors (gzip)</span></div>
+    <div class="tile"><b>0</b><span>vulnerabilities in code that runs in the browser</span></div>
+    <div class="tile"><b>0</b><span>secrets or keys found</span></div>
+    <div class="tile"><b>0</b><span>git commits — no backup yet</span></div>
+    <div class="tile"><b>16</b><span>projects (4 real, 12 samples)</span></div>
+  </div>
+
+  <h3>Security and release pipeline — results</h3>
+  <div class="pipe">
+    <div class="n">1</div><div class="t"><b>Code review</b><small>No unsafe patterns. Minor notes only.</small></div><div class="s"><span class="badge b-pass">Pass</span></div>
+    <div class="n">2</div><div class="t"><b>Dependency scan</b><small>Browser code: 0 issues. Build tools: 7 issues, all via Tailwind CSS 3.</small></div><div class="s"><span class="badge b-note">Pass, with notes</span></div>
+    <div class="n">3</div><div class="t"><b>Secrets scan</b><small>No keys, tokens or passwords in source, build or zip.</small></div><div class="s"><span class="badge b-pass">Pass</span></div>
+    <div class="n">4</div><div class="t"><b>Authentication testing</b><small>No login, accounts or admin panel exist.</small></div><div class="s"><span class="badge b-na">Not applicable</span></div>
+    <div class="n">5</div><div class="t"><b>Authorization testing</b><small>Everything is public by design. Check that the published documents are meant to be public.</small></div><div class="s"><span class="badge b-na">Not applicable</span></div>
+    <div class="n">6</div><div class="t"><b>XSS / SQL injection testing</b><small>React escapes all output; URL inputs use allowlists. No database exists.</small></div><div class="s"><span class="badge b-pass">Pass</span></div>
+    <div class="n">7</div><div class="t"><b>API testing</b><small>The only API is the contact form, and no provider is configured yet.</small></div><div class="s"><span class="badge b-note">Partly tested</span></div>
+    <div class="n">8</div><div class="t"><b>Rate-limit testing</b><small>The form has no rate limit or captcha, only a honeypot.</small></div><div class="s"><span class="badge b-act">Action needed</span></div>
+    <div class="n">9</div><div class="t"><b>HTTPS / security headers</b><small>doonbuilders.com has no HTTPS. No security headers are configured.</small></div><div class="s"><span class="badge b-act">Action needed</span></div>
+    <div class="n">10</div><div class="t"><b>Backup / restore test</b><small>Clean rebuild works, but the git repository has 0 commits and no remote.</small></div><div class="s"><span class="badge b-act">Action needed</span></div>
+    <div class="n">11</div><div class="t"><b>Deploy</b><small>The build works. Blocked by steps 8–10 and placeholder content.</small></div><div class="s"><span class="badge b-act">Not ready</span></div>
+  </div>
+  <p class="footer-note">Method: the source code, configuration and build output were inspected; <code>npm audit</code>, <code>npm outdated</code> and a production build were run; the build was restored from a clean copy; and the live domain's HTTP/HTTPS response was checked on 9 Oct 2026. Nothing was deployed or changed.</p>
+</section>
+
+<!-- ================================================================ 2. TECH STACK -->
+<section class="section">
+  <h2><span class="num">02</span>Technology — what the site is built with</h2>
+  <p class="lead">The site is a single-page application. The browser downloads one HTML file, and React builds every page from JavaScript. There is no backend server, no database and no login.</p>
+
+  <h3>Languages</h3>
+  <table>
+    <tr><th style="width:28%">Language</th><th>Where it is used</th></tr>
+    <tr><td><b>JavaScript (ES modules) + JSX</b></td><td>All pages, components, data and logic (<code>.js</code> / <code>.jsx</code> files). No TypeScript.</td></tr>
+    <tr><td><b>CSS</b> via Tailwind CSS</td><td>Utility classes in components, plus <code>src/styles/globals.css</code> for colours, type and shared classes.</td></tr>
+    <tr><td><b>HTML</b></td><td>One file, <code>index.html</code>: SEO meta tags, fonts, theme script, Organization schema.</td></tr>
+    <tr><td><b>SVG</b></td><td>Favicon, the animated blueprint intro, icons (Lucide).</td></tr>
+  </table>
+
+  <h3>Libraries used in the browser (production dependencies)</h3>
+  <table>
+    <tr><th style="width:24%">Package</th><th style="width:12%">Version</th><th>Purpose</th></tr>
+    <tr><td><b>react</b></td><td>19.3.0</td><td>UI library; builds every page from components.</td></tr>
+    <tr><td><b>react-dom</b></td><td>19.3.0</td><td>Renders React into the page.</td></tr>
+    <tr><td><b>react-router-dom</b></td><td>7.18.4</td><td>Page routing (<code>/about</code>, <code>/projects/:slug</code> …) without reloading the page.</td></tr>
+    <tr><td><b>gsap</b> (+ ScrollTrigger)</td><td>3.15.0</td><td>All animations: intro drawing, scroll reveals, pinned "Three Generations" section, parallax.</td></tr>
+    <tr><td><b>@gsap/react</b></td><td>2.1.2</td><td><code>useGSAP</code> hook; cleans up animations safely in React.</td></tr>
+    <tr><td><b>lenis</b></td><td>1.3.26</td><td>Smooth scrolling, kept in sync with GSAP.</td></tr>
+    <tr><td><b>lucide-react</b></td><td>1.49.0</td><td>Line icons (arrows, phone, mail, chevrons …).</td></tr>
+  </table>
+
+  <h3>Build tools (development only — not sent to visitors)</h3>
+  <table>
+    <tr><th style="width:24%">Package</th><th style="width:12%">Version</th><th>Purpose</th></tr>
+    <tr><td><b>vite</b></td><td>8.3.1</td><td>Dev server (port 5173) and production bundler (Rolldown). Splits code into <code>react</code>, <code>motion</code> and app chunks.</td></tr>
+    <tr><td><b>@vitejs/plugin-react</b></td><td>6.1.1</td><td>JSX compilation and fast refresh.</td></tr>
+    <tr><td><b>tailwindcss</b></td><td>3.4.19</td><td>Generates CSS from utility classes. Dark mode via <code>[data-theme="dark"]</code>.</td></tr>
+    <tr><td><b>postcss</b> + <b>autoprefixer</b></td><td>8.5.28 / 10.6.1</td><td>CSS processing and browser prefixes.</td></tr>
+  </table>
+
+  <h3>External services</h3>
+  <table>
+    <tr><th style="width:24%">Service</th><th>Use</th></tr>
+    <tr><td>Google Fonts</td><td>Poppins and Noto Serif Devanagari, loaded from <code>fonts.googleapis.com</code>.</td></tr>
+    <tr><td>WhatsApp (wa.me)</td><td>Click-to-chat links with a pre-filled message.</td></tr>
+    <tr><td>Contact form provider</td><td>One of Web3Forms, FormSubmit, Netlify Forms or a custom API, chosen with <code>VITE_CONTACT_PROVIDER</code>. <b>None is configured yet.</b></td></tr>
+    <tr><td>Hosting</td><td>Ready-made configs for Netlify (<code>netlify.toml</code>, <code>public/_redirects</code>) and Vercel (<code>vercel.json</code>).</td></tr>
+  </table>
+  <p>Environment: Node.js 24.21.0 and npm 11.19.0 on this machine (README requires Node 18+).</p>
+</section>
+
+<!-- ================================================================ 3. STRUCTURE -->
+<section class="section">
+  <h2><span class="num">03</span>Project structure</h2>
+  <p class="lead">A page is built in layers, from the HTML shell down to the data files. All visible content lives in <code>src/data/</code>, so text, projects and photos change without touching components.</p>
+
+<div class="tree">DOON/
+├─ index.html                 single HTML page — SEO tags, fonts, theme script, schema
+├─ package.json               dependencies and scripts (dev / build / preview)
+├─ vite.config.js             bundler: @ alias, port 5173, vendor chunks
+├─ tailwind.config.js         colours, fonts, shadows, easing, widths
+├─ postcss.config.js          Tailwind + Autoprefixer
+├─ netlify.toml · vercel.json hosting: build command, rewrites, cache headers
+├─ .env.example               contact-form and site-URL settings (empty)
+├─ public/                    served as-is: images (228 files, 26 MB), video (3.5 MB),
+│                             favicons, og image, robots.txt, sitemap.xml, manifest
+├─ documents/                 original-records PDF and its HTML source (not in the build)
+└─ src/
+   ├─ main.jsx                starts React + router
+   ├─ App.jsx                 the list of routes
+   ├─ layout/    (1)          MainLayout — intro, navbar, footer, floating call buttons
+   ├─ pages/     (10)         one file per URL
+   ├─ sections/home/ (13)     the Home page blocks, in story order
+   ├─ components/ (29)        shared pieces: buttons, cards, media, lightbox, navbar …
+   ├─ data/      (11)         ALL content: company, projects, archive, machinery, SEO …
+   ├─ hooks/     (2)          useLenis (smooth scroll), useGSAPAnimation (reveals)
+   ├─ lib/       (3)          gsap set-up, theme (light/dark), intro state
+   ├─ services/  (1)          contactService — form sending + validation
+   └─ styles/    (1)          globals.css — colour tokens, type, shared classes</div>
+
+  <div class="two">
+    <div>
+      <h3>Pages and URLs</h3>
+      <table>
+        <tr><th>URL</th><th>File</th></tr>
+        <tr><td><code>/</code></td><td>Home.jsx</td></tr>
+        <tr><td><code>/projects</code> (?filter=)</td><td>Projects.jsx</td></tr>
+        <tr><td><code>/projects/:slug</code></td><td>ProjectDetail.jsx</td></tr>
+        <tr><td><code>/ongoing-projects</code></td><td>OngoingProjects.jsx</td></tr>
+        <tr><td><code>/projects-delivered</code></td><td>DeliveredProjects.jsx</td></tr>
+        <tr><td><code>/experience</code></td><td>Experience.jsx</td></tr>
+        <tr><td><code>/machineries</code> (?category=)</td><td>Machinery.jsx</td></tr>
+        <tr><td><code>/about</code></td><td>About.jsx</td></tr>
+        <tr><td><code>/contact</code></td><td>Contact.jsx</td></tr>
+        <tr><td>anything else</td><td>NotFound.jsx</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Home page blocks (in order)</h3>
+      <table>
+        <tr><th>#</th><th>Section</th></tr>
+        <tr><td>1</td><td>Hero (background video)</td></tr>
+        <tr><td>2</td><td>Legacy</td></tr>
+        <tr><td>3</td><td>Stats (58+ yrs, 180+ projects, 3 generations)</td></tr>
+        <tr><td>4</td><td>Capabilities</td></tr>
+        <tr><td>5</td><td>Showcase</td></tr>
+        <tr><td>6</td><td>Site Gallery</td></tr>
+        <tr><td>7</td><td>Featured Projects</td></tr>
+        <tr><td>8</td><td>Government Projects</td></tr>
+        <tr><td>9</td><td>Private Projects</td></tr>
+        <tr><td>10</td><td>Machinery Preview</td></tr>
+        <tr><td>11</td><td>Three Generations (pinned)</td></tr>
+        <tr><td>12</td><td>Why Doon</td></tr>
+        <tr><td>13</td><td>Final CTA</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h3 style="margin-top:0">Shared components (29)</h3>
+  <table>
+    <tr><th style="width:25%">Group</th><th>Components</th></tr>
+    <tr><td>Frame &amp; navigation</td><td>Navbar, MobileMenu, Footer, Blessing (Hindi strip), Logo, ThemeToggle, ScrollToTop, FloatingActions (call / WhatsApp)</td></tr>
+    <tr><td>Page building</td><td>PageHero, SectionHeader, CTABand, Button, FilterBar, MaskLines, ImageReveal</td></tr>
+    <tr><td>Content cards</td><td>ProjectCard, MachineryCard, ArchiveCard, StatCounter, StageIndicator, Timeline, PlaceholderBadge</td></tr>
+    <tr><td>Media</td><td>Media (AVIF/WebP responsive images), Lightbox, DigitalCopy (typed copy of records), Intro (blueprint animation), WhatsAppIcon</td></tr>
+    <tr><td>Forms &amp; SEO</td><td>ContactForm, Seo (title, description, Open Graph, canonical)</td></tr>
+  </table>
+
+  <h3>Content files (<code>src/data/</code>)</h3>
+  <table>
+    <tr><th style="width:22%">File</th><th>What it holds</th><th style="width:26%">Current state</th></tr>
+    <tr><td>company.js</td><td>Name, phone 89230 76963, email, WhatsApp, stats, socials, address, logo</td><td>Address, map, logo, legal name, socials empty</td></tr>
+    <tr><td>projects.js</td><td>All projects and filters</td><td>4 real + 12 sample entries</td></tr>
+    <tr><td>archive.js</td><td>Original records: 1976, 1980, 1990 work orders; 2023 Dubai licence; current site record</td><td>5 records with scans</td></tr>
+    <tr><td>machinery.js</td><td>Machinery list and Home fleet groups</td><td>7 sample entries (stock photos)</td></tr>
+    <tr><td>timeline.js</td><td>Three generations: 1968, 1998, 2020</td><td>2nd/3rd generation names empty</td></tr>
+    <tr><td>capabilities.js</td><td>What we build, why us, form project types</td><td>Complete</td></tr>
+    <tr><td>images.js</td><td>Which image file is used where; portraits</td><td>Portraits not supplied</td></tr>
+    <tr><td>showcase.js, siteGallery.js</td><td>Home showcase slides and site photos</td><td>6 real site photos</td></tr>
+    <tr><td>navigation.js, seo.js</td><td>Menu/footer links; page titles and descriptions</td><td>Complete</td></tr>
+  </table>
+
+  <h3>Media assets</h3>
+  <table>
+    <tr><th style="width:26%">Folder</th><th>Contents</th></tr>
+    <tr><td>images/site/</td><td>Real Doon Builders site photos (6 subjects, 480/960 px)</td></tr>
+    <tr><td>images/archive/</td><td>Scans of original records (5 records, multiple close-ups)</td></tr>
+    <tr><td>images/placeholder/, stock/</td><td><b>Temporary</b> stock photos (Unsplash, Wikimedia CC0 / CC BY-SA). Credits in <code>stock/CREDITS.md</code>. Must be replaced before launch.</td></tr>
+    <tr><td>videos/</td><td>Hero video at 480p and 720p, plus a poster image. Mixkit stock footage of a Los Angeles site.</td></tr>
+    <tr><td>Formats</td><td>Each photo comes as AVIF and WebP at 2–3 widths (640/1280/1920). The <code>&lt;Media&gt;</code> component picks the best size and lazy-loads.</td></tr>
+  </table>
+</section>
+
+<!-- ================================================================ 4. COLOURS -->
+<section class="section newpage">
+  <h2><span class="num">04</span>Colours</h2>
+  <p class="lead">Colours are defined in two places: fixed brand colours in <code>tailwind.config.js</code>, and theme colours as CSS variables in <code>src/styles/globals.css</code>. The theme variables change in dark mode.</p>
+
+  <h3>Brand colours (same in light and dark mode)</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#C8102E"></div><div class="info"><b>Brand Red</b><code>#C8102E</code><span>Primary buttons, logo, links, focus ring, text selection, favicon bar, app theme colour</span></div></div>
+    <div class="sw"><div class="chip" style="background:#A50E27"></div><div class="info"><b>Brand Deep</b><code>#A50E27</code><span>Button hover / pressed state</span></div></div>
+    <div class="sw"><div class="chip" style="background:#E8475B"></div><div class="info"><b>Brand Bright</b><code>#E8475B</code><span>Small red text on dark backgrounds (contrast)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#F7D774"></div><div class="info"><b>Gold</b><code>#F7D774</code><span>Hindi blessing text and Om marks on the red strip</span></div></div>
+    <div class="sw"><div class="chip" style="background:#181A1D"></div><div class="info"><b>Charcoal</b><code>#181A1D</code><span>Dark cards, image overlays, dark-mode browser bar</span></div></div>
+    <div class="sw"><div class="chip" style="background:#111214"></div><div class="info"><b>Night</b><code>#111214</code><span>Darkest sections, favicon background</span></div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF"></div><div class="info"><b>White</b><code>#FFFFFF</code><span>Text on red and dark, light-mode browser bar, manifest background</span></div></div>
+    <div class="sw"><div class="chip check"><i style="background:rgba(255,255,255,0.15)"></i></div><div class="info"><b>Line (dark)</b><code>rgba(255,255,255,.15)</code><span>Dividers on fixed-dark sections</span></div></div>
+  </div>
+
+  <h3>Light theme</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#111214"></div><div class="info"><b>Ink</b><code>#111214 · 17 18 20</code><span>Main text</span></div></div>
+    <div class="sw"><div class="chip" style="background:#F6F7F9"></div><div class="info"><b>Paper</b><code>#F6F7F9 · 246 247 249</code><span>Page background, inputs</span></div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF"></div><div class="info"><b>Surface</b><code>#FFFFFF · 255 255 255</code><span>Cards, focused inputs</span></div></div>
+    <div class="sw"><div class="chip" style="background:#E6E8EC"></div><div class="info"><b>Mist</b><code>#E6E8EC · 230 232 236</code><span>Image backgrounds, placeholders</span></div></div>
+    <div class="sw"><div class="chip" style="background:#777B80"></div><div class="info"><b>Steel</b><code>#777B80 · 119 123 128</code><span>Muted text, placeholder text, intro lines</span></div></div>
+    <div class="sw"><div class="chip" style="background:#55595E"></div><div class="info"><b>Steel Dark</b><code>#55595E · 85 89 94</code><span>Secondary text, labels, lead paragraphs</span></div></div>
+    <div class="sw"><div class="chip check"><i style="background:rgba(20,20,20,0.12)"></i></div><div class="info"><b>Line</b><code>rgba(20,20,20,.12)</code><span>Borders and dividers</span></div></div>
+    <div class="sw"><div class="chip" style="background:#B9BAB7"></div><div class="info"><b>Scrollbar</b><code>#B9BAB7</code><span>Scrollbar thumb (desktop)</span></div></div>
+  </div>
+
+  <h3>Dark theme</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#ECEDF0"></div><div class="info"><b>Ink</b><code>#ECEDF0 · 236 237 240</code><span>Main text</span></div></div>
+    <div class="sw"><div class="chip" style="background:#0D0E10"></div><div class="info"><b>Paper</b><code>#0D0E10 · 13 14 16</code><span>Page background</span></div></div>
+    <div class="sw"><div class="chip" style="background:#181A1D"></div><div class="info"><b>Surface</b><code>#181A1D · 24 26 29</code><span>Cards</span></div></div>
+    <div class="sw"><div class="chip" style="background:#2C2F34"></div><div class="info"><b>Mist</b><code>#2C2F34 · 44 47 52</code><span>Image backgrounds</span></div></div>
+    <div class="sw"><div class="chip" style="background:#9499A0"></div><div class="info"><b>Steel</b><code>#9499A0 · 148 153 160</code><span>Muted text</span></div></div>
+    <div class="sw"><div class="chip" style="background:#B2B7BE"></div><div class="info"><b>Steel Dark</b><code>#B2B7BE · 178 183 190</code><span>Secondary text</span></div></div>
+    <div class="sw"><div class="chip" style="background:#F05468"></div><div class="info"><b>Brand Text</b><code>#F05468 · 240 84 104</code><span>Red text, brightened for dark backgrounds</span></div></div>
+    <div class="sw"><div class="chip" style="background:#3A3D42"></div><div class="info"><b>Scrollbar</b><code>#3A3D42</code><span>Scrollbar thumb; line is rgba(255,255,255,.11)</span></div></div>
+  </div>
+
+  <h3>Third-party colours</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#25D366"></div><div class="info"><b>WhatsApp Green</b><code>#25D366</code><span>WhatsApp buttons (CTA, floating, mobile menu)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#1FBE5B"></div><div class="info"><b>WhatsApp Hover</b><code>#1FBE5B</code><span>CTA button hover</span></div></div>
+    <div class="sw"><div class="chip" style="background:#1DA851"></div><div class="info"><b>WhatsApp Icon</b><code>#1DA851</code><span>Icon colour in navbar and footer</span></div></div>
+    <div class="sw"><div class="chip" style="background:rgba(200,16,46,0.10)"></div><div class="info"><b>Brand Tints</b><code>red at 5–15% opacity</code><span>Eyebrow pills, input focus glow, alert boxes, hero glow</span></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <h3 style="margin-top:0">The two themes side by side</h3>
+  <div class="theme-pair">
+    <div class="theme-demo" style="background:#F6F7F9;color:#111214">
+      <div style="font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:#C8102E;font-weight:600">Light theme</div>
+      <div style="font-size:15pt;font-weight:700;letter-spacing:-.03em;margin-top:2mm">Building India Since 1968.</div>
+      <div class="card" style="background:#fff;box-shadow:0 1px 2px rgba(17,18,20,.04),0 4px 16px -4px rgba(17,18,20,.08)">
+        <div style="font-size:7pt;letter-spacing:.18em;text-transform:uppercase;color:#55595E">Kolar Earth Dam · 1990</div>
+        <div style="color:#55595E;font-size:8.5pt;margin-top:1.5mm">Parapet wall, RD 0 to 983.5 m.</div>
+        <span class="btn">Discuss a Project</span>
+      </div>
+    </div>
+    <div class="theme-demo" style="background:#0D0E10;color:#ECEDF0;border-color:#2C2F34">
+      <div style="font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:#F05468;font-weight:600">Dark theme</div>
+      <div style="font-size:15pt;font-weight:700;letter-spacing:-.03em;margin-top:2mm">Building India Since 1968.</div>
+      <div class="card" style="background:#181A1D;border:1px solid rgba(255,255,255,.11)">
+        <div style="font-size:7pt;letter-spacing:.18em;text-transform:uppercase;color:#B2B7BE">Kolar Earth Dam · 1990</div>
+        <div style="color:#B2B7BE;font-size:8.5pt;margin-top:1.5mm">Parapet wall, RD 0 to 983.5 m.</div>
+        <span class="btn">Discuss a Project</span>
+      </div>
+    </div>
+  </div>
+  <p>The theme follows the device setting. A visitor can switch it with the navbar toggle, and the choice is saved in <code>localStorage</code> under the key <code>db-theme</code>. A small script in <code>index.html</code> applies the theme before the page first paints, so the page never flashes the wrong theme.</p>
+
+  <h3>Shadows</h3>
+  <table>
+    <tr><th style="width:22%">Token</th><th>Value</th><th style="width:28%">Used for</th></tr>
+    <tr><td>shadow-card</td><td class="mono">0 1px 2px rgba(17,18,20,.04), 0 4px 16px -4px rgba(17,18,20,.08)</td><td>Resting cards</td></tr>
+    <tr><td>shadow-card-hover</td><td class="mono">0 2px 4px rgba(17,18,20,.04), 0 24px 48px -12px rgba(17,18,20,.22)</td><td>Hovered cards, WhatsApp CTA</td></tr>
+    <tr><td>shadow-card-press</td><td class="mono">0 4px 8px rgba(17,18,20,.06), 0 32px 64px -16px rgba(17,18,20,.30)</td><td>Pressed cards</td></tr>
+    <tr><td>shadow-nav</td><td class="mono">0 1px 0 rgba(17,18,20,.06), 0 8px 24px -12px rgba(17,18,20,.14)</td><td>Navbar after scrolling</td></tr>
+    <tr><td>shadow-brand</td><td class="mono">0 10px 24px -10px rgba(200,16,46,.55)</td><td>Red buttons (red glow)</td></tr>
+  </table>
+</section>
+
+<!-- ================================================================ 5. TYPOGRAPHY & TOKENS -->
+<section class="section">
+  <h2><span class="num">05</span>Typography, layout and motion</h2>
+
+  <h3>Fonts</h3>
+  <table>
+    <tr><th style="width:30%">Font</th><th style="width:20%">Weights</th><th>Use</th></tr>
+    <tr><td><b style="font-family:Poppins">Poppins</b></td><td>400 · 500 · 600 · 700 · 800</td><td>Everything in English. Fallbacks: system-ui, Segoe UI, Roboto, Arial.</td></tr>
+    <tr><td><b>Noto Serif Devanagari</b></td><td>600 · 700</td><td>The Hindi blessing line: "ॐ भगवान श्री टपकेश्वर महादेव जी की कृपा से". Fallbacks: Nirmala UI, Mangal.</td></tr>
+  </table>
+
+  <h3>Type scale</h3>
+  <div class="type-sample"><small><b>.display-xl</b> — hero headings<br />clamp(2rem, 4.8vw, 4rem) · 700 · lh 1.04 · −0.035em</small><span style="font-size:24pt;font-weight:700;letter-spacing:-.035em;line-height:1.04">Since 1968</span></div>
+  <div class="type-sample"><small><b>.h-section</b> — section headings<br />clamp(1.75rem, 3.6vw, 3rem) · 700 · lh 1.08</small><span style="font-size:18pt;font-weight:700;letter-spacing:-.03em">Three Generations</span></div>
+  <div class="type-sample"><small><b>.h-card</b> — card headings<br />clamp(1.4rem, 2.4vw, 2rem) · 700</small><span style="font-size:14pt;font-weight:700;letter-spacing:-.02em">Kolar Earth Dam</span></div>
+  <div class="type-sample"><small><b>.lead</b> — intro paragraphs<br />16–18px · lh 1.75 · steel-dark</small><span style="font-size:10.5pt;color:#55595E">Projects built to last.</span></div>
+  <div class="type-sample"><small><b>body</b><br />15px mobile, 16px from 768px · lh relaxed</small><span>Regular paragraph text.</span></div>
+  <div class="type-sample"><small><b>.eyebrow</b> / <b>.meta-label</b><br />11px · uppercase · tracking .14em / .18em</small><span><span class="eyebrow" style="margin:0">Our Legacy</span></span></div>
+
+  <h3>Layout tokens</h3>
+  <table>
+    <tr><th style="width:30%">Token</th><th>Value</th></tr>
+    <tr><td>Max content width</td><td>1440px (<code>.container-x</code>); text column 38rem</td></tr>
+    <tr><td>Page gutter (<code>--gutter</code>)</td><td>20px mobile · 32px from 768px · 48px from 1024px · 80px from 1440px</td></tr>
+    <tr><td>Navbar height (<code>--nav-h</code>)</td><td>68px · 76px from 1024px · 60px on short screens</td></tr>
+    <tr><td>Blessing strip (<code>--blessing-h</code>)</td><td>44px · 48px · 52px · 36px on short screens</td></tr>
+    <tr><td>Section spacing</td><td>48px · 64px · 80px vertical padding (<code>.section-y</code>)</td></tr>
+    <tr><td>Breakpoints</td><td>Tailwind defaults: sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536</td></tr>
+    <tr><td>Corner radius</td><td>Cards 16px (<code>rounded-2xl</code>), inputs 12px, buttons and pills fully round</td></tr>
+    <tr><td>Easing (<code>ease-arch</code>)</td><td><code>cubic-bezier(0.22, 1, 0.36, 1)</code>: fast start, soft settle</td></tr>
+    <tr><td>Backgrounds</td><td><code>.bg-blueprint</code> (44px grid + red glow), <code>.grid-lines</code>, <code>.placeholder-grid</code> (32px grid)</td></tr>
+  </table>
+
+  <h3>Motion and accessibility</h3>
+  <table>
+    <tr><th style="width:30%">Feature</th><th>Behaviour</th></tr>
+    <tr><td>Intro</td><td>A blueprint drawing of a building, then the wordmark (about 3.9s). Plays once per browser session. A click or key press skips it.</td></tr>
+    <tr><td>Scroll reveals</td><td><code>data-reveal</code> = lines · fade · stagger · image · rule, plus <code>data-parallax</code>, all run by GSAP ScrollTrigger.</td></tr>
+    <tr><td>Smooth scroll</td><td>Lenis, duration 1.15s, driven by the GSAP ticker.</td></tr>
+    <tr><td>Cards</td><td>Lift 6px and scale 1.2% on hover; the image zooms 6% over 1.2s.</td></tr>
+    <tr><td>Page change</td><td>0.6s fade-up (<code>.page-enter</code>).</td></tr>
+    <tr><td>Reduced motion</td><td>No intro, no smooth scroll, no reveals, no video autoplay. The pinned section becomes a normal stack.</td></tr>
+    <tr><td>Accessibility</td><td>Skip link, semantic landmarks, visible focus ring (2px brand red), labelled fields with inline errors, Escape closes menus and lightboxes and returns focus.</td></tr>
+  </table>
+</section>
+
+<!-- ================================================================ 6. SEO, BUILD, HOSTING -->
+<section class="section">
+  <h2><span class="num">06</span>SEO, build and hosting</h2>
+
+  <h3>SEO and sharing</h3>
+  <table>
+    <tr><th style="width:28%">Item</th><th>Status</th></tr>
+    <tr><td>Per-page title + description</td><td>Yes. <code>src/data/seo.js</code> sets them through the <code>&lt;Seo&gt;</code> component.</td></tr>
+    <tr><td>Open Graph / Twitter cards</td><td>Yes, with a 1200×630 image at <code>/og/og-default.jpg</code>.</td></tr>
+    <tr><td>Canonical URL, og:url</td><td><b>Off.</b> They only appear once <code>VITE_SITE_URL</code> is set.</td></tr>
+    <tr><td>Organization schema (JSON-LD)</td><td>Name, founding year, phone and email.</td></tr>
+    <tr><td>robots.txt, sitemap.xml</td><td>Present, with 11 URLs on <code>https://doonbuilders.com</code>.</td></tr>
+    <tr><td>Web app manifest</td><td>Present, theme colour <code>#c8102e</code>, icons 32 / 180 / 512 px.</td></tr>
+    <tr><td>No-JavaScript fallback</td><td>A <code>&lt;noscript&gt;</code> line with the phone and email.</td></tr>
+  </table>
+
+  <h3>Production build (<code>npm run build</code>, 1.4s)</h3>
+  <table>
+    <tr><th>File</th><th>Size</th><th>Gzip</th><th>Contents</th></tr>
+    <tr><td>react-*.js</td><td>258.6 KB</td><td>82.1 KB</td><td>React, React DOM, router</td></tr>
+    <tr><td>index-*.js</td><td>182.1 KB</td><td>49.0 KB</td><td>Site code and data</td></tr>
+    <tr><td>motion-*.js</td><td>132.3 KB</td><td>49.7 KB</td><td>GSAP, ScrollTrigger, Lenis</td></tr>
+    <tr><td>index-*.css</td><td>67.0 KB</td><td>12.8 KB</td><td>All styles</td></tr>
+    <tr><td><b>Total code</b></td><td><b>640.6 KB</b></td><td><b>193.9 KB</b></td><td>Plus about 30 MB of images and video, loaded on demand</td></tr>
+  </table>
+
+  <h3>Hosting configuration</h3>
+  <table>
+    <tr><th style="width:22%">File</th><th>What it does</th></tr>
+    <tr><td>netlify.toml</td><td>Builds with <code>npm run build</code> and publishes <code>dist</code>. Caches <code>/assets/*</code> for 1 year and <code>/images/*</code> for 7 days.</td></tr>
+    <tr><td>public/_redirects</td><td><code>/* /index.html 200</code>, so deep links like <code>/about</code> work on Netlify.</td></tr>
+    <tr><td>vercel.json</td><td>The same rewrite, and a 1-year cache on <code>/assets/*</code>. It has no <code>/images</code> cache rule.</td></tr>
+    <tr><td>vite.config.js</td><td>The dev server allows <code>*.trycloudflare.com</code> tunnels for sharing previews.</td></tr>
+  </table>
+
+  <h3>Environment variables (<code>.env</code>)</h3>
+  <table>
+    <tr><th style="width:34%">Variable</th><th>Purpose</th><th style="width:14%">Set?</th></tr>
+    <tr><td>VITE_SITE_URL</td><td>Canonical and sharing URLs</td><td>No</td></tr>
+    <tr><td>VITE_CONTACT_PROVIDER</td><td>web3forms · formsubmit · netlify · custom</td><td>No</td></tr>
+    <tr><td>VITE_CONTACT_FORM_KEY</td><td>Web3Forms public access key</td><td>No</td></tr>
+    <tr><td>VITE_CONTACT_ENDPOINT</td><td>FormSubmit or custom API URL</td><td>No</td></tr>
+  </table>
+  <div class="callout warn"><b>Note on VITE_ variables</b>Every <code>VITE_</code> value is copied into the public JavaScript file, so anyone can read it. Only public keys (such as a Web3Forms access key) may go here, never passwords or private API keys.</div>
+</section>
+
+<!-- ================================================================ 7. SECURITY AUDIT -->
+<section class="section newpage">
+  <h2><span class="num">07</span>Security and release audit — step by step</h2>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>1</span>Code review</h3><span class="badge b-pass">Pass</span></div>
+    <ul>
+      <li>No <code>dangerouslySetInnerHTML</code>, <code>innerHTML</code>, <code>eval</code>, <code>new Function</code> or <code>document.write</code> anywhere in <code>src/</code>.</li>
+      <li>All 9 links that open in a new tab use <code>rel="noopener noreferrer"</code>.</li>
+      <li>URL inputs are checked against allowlists: <code>?filter=</code> and <code>?category=</code> fall back to "all", and an unknown <code>/projects/:slug</code> shows the 404 page.</li>
+      <li>Browser storage holds only the theme choice (<code>db-theme</code>) and an intro-seen flag. No personal data is stored.</li>
+      <li>The contact form never claims to have sent a message unless the provider confirms it.</li>
+    </ul>
+    <p class="fix"><b>Minor notes:</b> only the message field has a length limit (4,000 characters); the provider should limit the other fields. Sending is not idempotent, so if a request times out, a retry can send a duplicate enquiry.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>2</span>Dependency scan</h3><span class="badge b-note">Pass, with notes</span></div>
+    <ul>
+      <li><code>npm audit --omit=dev</code>: <b>0 vulnerabilities</b> in libraries that ship to the browser.</li>
+      <li><code>npm audit</code> (all): <b>7 vulnerabilities (5 high, 2 moderate)</b>, all inside Tailwind CSS 3.4.19's build-time chain: braces, micromatch, fast-glob, chokidar, postcss-nested, postcss-selector-parser. They are denial-of-service bugs that need malicious input files at build time. Visitors are not affected.</li>
+      <li>Patch updates available: vite 8.3.1 → 8.3.4, @vitejs/plugin-react 6.1.1 → 6.1.2, lucide-react 1.49 → 1.54, postcss 8.5.28 → 8.5.29.</li>
+    </ul>
+    <p class="fix"><b>Fix:</b> run <code>npm update</code> now. Plan a migration to Tailwind CSS 4 (a breaking change) to clear the build-tool advisories. Do not run <code>npm audit fix --force</code> blindly, because it will break the styling.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>3</span>Secrets scan</h3><span class="badge b-pass">Pass</span></div>
+    <ul>
+      <li>Source, config, <code>dist/</code> and <code>doonbuilders-site.zip</code> were searched for API keys, tokens, passwords, private keys and AWS / GitHub / Google / OpenAI key patterns. <b>None found.</b></li>
+      <li>No <code>.env</code> file exists. <code>.gitignore</code> already excludes <code>.env</code>, <code>.env.local</code> and <code>.env.*.local</code>. <code>.env.example</code> holds only empty values.</li>
+    </ul>
+    <p class="fix"><b>Fix:</b> add <code>*.zip</code> to <code>.gitignore</code>, so the 25 MB build zip is not committed by mistake.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>4</span>Authentication testing</h3><span class="badge b-na">Not applicable</span></div>
+    <p>The site has no login, user accounts, admin panel, sessions or cookies of its own, so there is nothing to test. If a CMS or admin area is added later, test this step again before launch.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>5</span>Authorization testing</h3><span class="badge b-na">Not applicable</span></div>
+    <p>There are no protected pages or private data. Everything in <code>src/data/</code> and <code>public/</code> ships to every visitor's browser, so treat all of it as public.</p>
+    <p class="fix"><b>Review:</b> the 2023 Dubai professional licence (licence no. 1174457) is published as full-page scans. The typed copy leaves out the owner's name, but the full-page scan may still show it in Arabic. The licence expired on 9 April 2024. Confirm that the owner agrees to publishing it.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="audit">
+    <div class="audit-head"><h3><span>6</span>XSS / SQL injection testing</h3><span class="badge b-pass">Pass</span></div>
+    <ul>
+      <li><b>SQL injection:</b> not possible. The site has no database and no server code.</li>
+      <li><b>XSS:</b> React escapes everything it renders, and the code uses no raw-HTML functions. The SEO tags are set with <code>setAttribute</code>, which is safe. The JSON-LD schema is fixed text.</li>
+      <li>Values from the URL (filter, category, slug) only ever choose from fixed lists and are never printed back as HTML.</li>
+      <li>Link targets (phone, email, WhatsApp, socials, map) come from <code>company.js</code>, which only developers edit.</li>
+    </ul>
+    <p class="fix"><b>Keep in mind:</b> when social or map links are added, use only <code>https://</code> URLs.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>7</span>API testing</h3><span class="badge b-note">Partly tested</span></div>
+    <ul>
+      <li>The only outgoing API call is the contact form (<code>src/services/contactService.js</code>).</li>
+      <li>Tested by reading the code: with no provider set, the form shows "Online enquiries are not connected yet" and gives the phone and email. A network or provider failure shows an error message with the phone number. The honeypot field silently drops bots.</li>
+      <li>The live request could not be tested, because no provider is configured.</li>
+    </ul>
+    <p class="fix"><b>Once a provider is set, test:</b> a valid submission (does the email arrive?), an invalid key or endpoint (the error message should appear), offline mode, and a filled honeypot (nothing should be sent). Netlify Forms only works when the site is hosted on Netlify.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>8</span>Rate-limit testing</h3><span class="badge b-act">Action needed</span></div>
+    <ul>
+      <li>The site has no server, so it cannot rate-limit anything itself. The form's only protections are a honeypot field and a disabled button while a message is sending.</li>
+      <li>A bot that skips the honeypot can flood the company inbox, and Web3Forms / FormSubmit free plans have monthly limits that spam can use up.</li>
+    </ul>
+    <p class="fix"><b>Fix before switching the form on:</b> enable the provider's captcha and spam filter. Options: Web3Forms with hCaptcha, Netlify Forms with reCAPTCHA (Akismet filtering is on by default), or Cloudflare Turnstile with a custom endpoint. A custom API must enforce its own per-IP limit, for example 5 requests per 10 minutes.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>9</span>HTTPS / security-header check</h3><span class="badge b-act">Action needed</span></div>
+    <ul>
+      <li><b>Live check (9 Oct 2026):</b> <code>https://doonbuilders.com</code> failed the TLS handshake, so the domain has no working HTTPS. <code>http://doonbuilders.com</code> returned <b>404 Not Found</b> from a "DPS/2.0.0" server. The website is not deployed on this domain yet.</li>
+      <li><b>Config check:</b> <code>netlify.toml</code> and <code>vercel.json</code> set only <code>Cache-Control</code>. None of these headers is set: Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options / frame-ancestors, Referrer-Policy, Permissions-Policy.</li>
+    </ul>
+    <p class="fix"><b>Fix:</b> point the domain's DNS at Netlify or Vercel (both provide free automatic HTTPS) and add the headers shown in the appendix.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>10</span>Backup / restore test</h3><span class="badge b-act">Action needed</span></div>
+    <ul>
+      <li><b>Restore test passed:</b> only the source files were copied to an empty folder, then <code>npm ci</code> and <code>npm run build</code> were run. The build succeeded and produced <b>identical file hashes</b>, so the build is reproducible from source.</li>
+      <li><b>No backup exists:</b> the git repository has <b>0 commits</b> and no remote. Every file is untracked, so one disk failure or accidental delete would lose the whole project.</li>
+      <li><code>doonbuilders-site.zip</code> holds only the built site (203 files), not the source code, so it is not a backup. Its paths use Windows <code>\</code> separators, which can break when unzipped on Linux hosts.</li>
+    </ul>
+    <p class="fix"><b>Fix now:</b> make the first commit and push it to a private GitHub repository. Keep a dated copy of <code>public/images/archive/</code> and <code>documents/</code> (the original scans) somewhere separate, such as Google Drive.</p>
+  </div>
+
+  <div class="audit">
+    <div class="audit-head"><h3><span>11</span>Deploy</h3><span class="badge b-act">Not ready</span></div>
+    <p>The build works and both hosting configs are correct. Nothing was deployed during this audit. The following must be done before going live:</p>
+    <ul>
+      <li>Steps 8, 9 and 10 above.</li>
+      <li>Replace the 12 sample projects and 7 sample machinery entries. Replace the stock photos and the Los Angeles hero video with real Doon Builders media.</li>
+      <li>Set <code>VITE_SITE_URL</code> and configure the contact provider.</li>
+      <li>Add the logo, registered name, office address, map link, social links, generation names and portraits.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================================================================ 8. ACTION LIST + APPENDIX -->
+<section class="section">
+  <h2><span class="num">08</span>Action list, in priority order</h2>
+  <table>
+    <tr><th style="width:6%">#</th><th>Action</th><th style="width:16%">Priority</th><th style="width:14%">Effort</th></tr>
+    <tr><td>1</td><td>First git commit and push to a private GitHub repo; add <code>*.zip</code> to <code>.gitignore</code></td><td><span class="badge b-act">Critical</span></td><td>10 min</td></tr>
+    <tr><td>2</td><td>Connect the domain to Netlify/Vercel with HTTPS</td><td><span class="badge b-act">High</span></td><td>30 min</td></tr>
+    <tr><td>3</td><td>Add security headers (appendix) and test them at securityheaders.com</td><td><span class="badge b-act">High</span></td><td>30 min</td></tr>
+    <tr><td>4</td><td>Configure the contact provider with captcha, then run the API tests from step 7</td><td><span class="badge b-act">High</span></td><td>1 hour</td></tr>
+    <tr><td>5</td><td>Replace sample projects, machinery, stock photos and the hero video</td><td><span class="badge b-act">High</span></td><td>Content</td></tr>
+    <tr><td>6</td><td>Set <code>VITE_SITE_URL</code>; fill in logo, address, map and socials in <code>company.js</code></td><td><span class="badge b-note">Medium</span></td><td>15 min</td></tr>
+    <tr><td>7</td><td>Confirm consent for publishing the Dubai licence scans</td><td><span class="badge b-note">Medium</span></td><td>—</td></tr>
+    <tr><td>8</td><td><code>npm update</code> for patch versions</td><td><span class="badge b-note">Medium</span></td><td>5 min</td></tr>
+    <tr><td>9</td><td>Plan the Tailwind CSS 4 migration to clear build-tool advisories</td><td><span class="badge b-na">Low</span></td><td>Half a day</td></tr>
+    <tr><td>10</td><td>Add an <code>/images/*</code> cache rule to <code>vercel.json</code> (if using Vercel)</td><td><span class="badge b-na">Low</span></td><td>5 min</td></tr>
+  </table>
+
+  <h3>Appendix A — recommended security headers for <code>netlify.toml</code></h3>
+<pre class="snippet"><span class="c"># Add below the existing [[headers]] blocks.
+# The sha256 hash allows the inline theme script in index.html.
+# If that script is edited, recompute the hash, or the theme will not load before first paint.</span>
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-qWMmeLj9qnOJuXE87IHmK84/PcONhXQt+KDpeKgtj7k='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://api.web3forms.com https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"</pre>
+  <p>For Vercel, add the same six headers to <code>vercel.json</code> under <code>"headers"</code> with <code>"source": "/(.*)"</code>. If a custom API endpoint is used, add its domain to <code>connect-src</code>. Load the site after deploying and check the browser console for CSP errors.</p>
+
+  <h3>Appendix B — commands used in this audit</h3>
+<pre class="snippet">npm audit                 <span class="c"># all dependencies → 7 (dev-only)</span>
+npm audit --omit=dev      <span class="c"># browser dependencies → 0</span>
+npm outdated              <span class="c"># 4 patch updates available</span>
+npm run build             <span class="c"># production build → passes in 1.4s</span>
+npm ci &amp;&amp; npm run build   <span class="c"># restore test from a clean copy → identical output</span>
+curl -I https://doonbuilders.com   <span class="c"># TLS handshake failed</span>
+curl -I http://doonbuilders.com    <span class="c"># 404, server DPS/2.0.0</span></pre>
+
+  <p class="footer-note">Report generated 9 October 2026 from the working copy at <code>C:\Zyvox EXE\DOON</code>. Source for this PDF: <code>documents/source/project-report.html</code>.</p>
+</section>
+
+</body>
+</html>
