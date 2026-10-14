@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Doon Builders — Website Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4; margin: 16mm 16mm 18mm; }
+  @page :first { margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Poppins, 'Segoe UI', Arial, sans-serif;
+    color: #111214;
+    font-size: 9.6pt;
+    line-height: 1.55;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Cover */
+  .cover {
+    height: 297mm;
+    padding: 26mm 22mm 20mm;
+    background: #111214;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    left: -60mm; bottom: -60mm;
+    width: 170mm; height: 170mm;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,16,46,0.55), rgba(200,16,46,0) 70%);
+  }
+  .cover .blessing {
+    font-family: 'Noto Serif Devanagari', 'Nirmala UI', serif;
+    color: #F7D774;
+    font-size: 12pt;
+    font-weight: 600;
+  }
+  .wordmark { margin-top: 30mm; border-left: 5px solid #C8102E; padding-left: 6mm; position: relative; }
+  .wordmark b { display: block; font-size: 30pt; font-weight: 800; letter-spacing: 0.06em; line-height: 1.1; }
+  .wordmark span { display: block; margin-top: 2mm; font-size: 9pt; letter-spacing: 0.34em; color: rgba(255,255,255,0.7); }
+  .cover h1 { margin: 22mm 0 4mm; font-size: 26pt; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; position: relative; }
+  .cover h1 em { font-style: normal; color: #E8475B; }
+  .cover p.lead { max-width: 135mm; color: rgba(255,255,255,0.78); font-size: 11pt; position: relative; }
+  .cover .meta { margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; position: relative; }
+  .cover .meta div { border-top: 1px solid rgba(255,255,255,0.18); padding-top: 3mm; }
+  .cover .meta small { display: block; font-size: 7pt; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+  .cover .meta strong { font-size: 10pt; font-weight: 600; }
+
+  /* Body */
+  h2 {
+    font-size: 15pt; font-weight: 700; letter-spacing: -0.01em;
+    margin: 0 0 3mm; padding-top: 1mm;
+    break-after: avoid;
+  }
+  h2 .num { color: #C8102E; margin-right: 2.5mm; }
+  h3 { font-size: 10.5pt; font-weight: 600; margin: 5mm 0 2mm; break-after: avoid; }
+  section { margin-bottom: 8mm; }
+  section.break { break-before: page; }
+  p { margin: 0 0 2.5mm; }
+  .eyebrow {
+    display: block; width: max-content; break-after: avoid; font-size: 7pt; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #C8102E; border: 1px solid rgba(200,16,46,0.3); background: rgba(200,16,46,0.06);
+    border-radius: 99px; padding: 1mm 3mm; margin-bottom: 2.5mm;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 1mm 0 3mm; font-size: 8.8pt; break-inside: auto; }
+  tr { break-inside: avoid; }
+  th, td { text-align: left; vertical-align: top; padding: 1.8mm 2.5mm; border-bottom: 1px solid #E6E8EC; }
+  th { font-size: 7.2pt; letter-spacing: 0.12em; text-transform: uppercase; color: #55595E; font-weight: 600; background: #F6F7F9; }
+  td:first-child { font-weight: 500; }
+  code, .mono { font-family: Consolas, 'Courier New', monospace; font-size: 8.4pt; background: #F6F7F9; border-radius: 3px; padding: 0.2mm 1mm; }
+  pre {
+    font-family: Consolas, 'Courier New', monospace; font-size: 8.2pt; line-height: 1.5;
+    background: #181A1D; color: #ECEDF0; border-radius: 3mm; padding: 4mm 5mm; margin: 1mm 0 3mm;
+    white-space: pre; break-inside: avoid;
+  }
+  pre .c { color: #9499A0; }
+  .card { border: 1px solid #E6E8EC; border-radius: 3mm; padding: 4mm 5mm; margin: 2mm 0 3mm; break-inside: avoid; }
+  .card.brand { border-color: rgba(200,16,46,0.35); background: rgba(200,16,46,0.04); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .kv { display: grid; grid-template-columns: 38mm 1fr; gap: 1.2mm 4mm; }
+  .kv dt { color: #55595E; font-size: 8.4pt; }
+  .kv dd { margin: 0; font-weight: 500; }
+  ul { margin: 0 0 3mm; padding-left: 5mm; }
+  li { margin-bottom: 1mm; }
+
+  /* Colour swatches */
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 2mm 0 4mm; }
+  .sw { border: 1px solid #E6E8EC; border-radius: 3mm; overflow: hidden; break-inside: avoid; }
+  .sw i { display: block; height: 15mm; }
+  .sw div { padding: 2mm 2.5mm; }
+  .sw b { display: block; font-size: 8.4pt; font-weight: 600; }
+  .sw span { display: block; font-family: Consolas, monospace; font-size: 8pt; color: #55595E; }
+  .sw small { display: block; font-size: 7.2pt; color: #777B80; line-height: 1.35; margin-top: 0.8mm; }
+  .dot { display: inline-block; width: 3mm; height: 3mm; border-radius: 50%; vertical-align: -0.4mm; margin-right: 1.5mm; border: 1px solid rgba(0,0,0,0.12); }
+
+  .type-sample { border: 1px solid #E6E8EC; border-radius: 3mm; padding: 4mm 5mm; margin-bottom: 3mm; break-inside: avoid; }
+  .type-sample .big { font-size: 24pt; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
+  .type-sample .big em { font-style: normal; color: #C8102E; }
+  .type-sample .deva { font-family: 'Noto Serif Devanagari', serif; font-size: 13pt; font-weight: 600; color: #A50E27; }
+
+  .status { display: inline-block; font-size: 7.2pt; font-weight: 600; border-radius: 99px; padding: 0.4mm 2.2mm; }
+  .ok { background: #E7F7EE; color: #11733F; }
+  .wait { background: #FFF4D6; color: #8A5A00; }
+  .todo { background: #FDE8EB; color: #A50E27; }
+  .media table { font-size: 8.2pt; margin-bottom: 2mm; }
+  .media th, .media td { padding: 1.3mm 2.2mm; }
+  .media p { margin-bottom: 1.8mm; }
+  .media h3 { margin-top: 3.5mm; }
+  .foot { margin-top: 8mm; padding-top: 3mm; border-top: 1px solid #E6E8EC; font-size: 7.6pt; color: #777B80; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<div class="cover">
+  <div class="blessing">ॐ &nbsp;भगवान श्री टपकेश्वर महादेव जी की कृपा से&nbsp; ॐ</div>
+  <div class="wordmark"><b>DOON BUILDERS</b><span>SINCE 1968</span></div>
+  <h1>Website<br /><em>Documentation</em></h1>
+  <p class="lead">
+    This document covers the Doon Builders website: where the code lives, how it is built and deployed,
+    the technology and source code used, the full colour palette and typography, the pages, media and
+    content, and what remains to be completed.
+  </p>
+  <div class="meta">
+    <div><small>Live website</small><strong>doonbuilders.in</strong></div>
+    <div><small>Code repository</small><strong>doonbuildersdigital/doonbuilders</strong></div>
+    <div><small>Document date</small><strong>14 October 2026</strong></div>
+  </div>
+</div>
+
+<!-- ============================== 1. OVERVIEW ============================== -->
+<section>
+  <span class="eyebrow">Overview</span>
+  <h2><span class="num">01</span>Website at a glance</h2>
+  <p>
+    The Doon Builders website is the corporate site of a three-generation construction and infrastructure
+    company (est. 1968). It presents the company's history, government and private projects, machinery,
+    on-site work and contact options, with a dark/light theme and smooth animation throughout.
+  </p>
+  <div class="card brand">
+    <dl class="kv">
+      <dt>Website</dt><dd>https://doonbuilders.in &nbsp;(also www.doonbuilders.in)</dd>
+      <dt>Netlify address</dt><dd>https://doonbuildersofficial.netlify.app</dd>
+      <dt>Code repository</dt><dd>https://github.com/doonbuildersdigital/doonbuilders &nbsp;(branch <code>main</code>)</dd>
+      <dt>Hosting</dt><dd>Netlify — project <b>doonbuildersofficial</b></dd>
+      <dt>Domain registrar</dt><dd>BigRock (doonbuilders.in)</dd>
+      <dt>Email</dt><dd>Titan Email on the doonbuilders.in domain</dd>
+      <dt>Type of site</dt><dd>Single-page application (React) built to static files</dd>
+      <dt>Pages</dt><dd>9 pages + project detail pages + 404 page</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- ============================== 2. REPO & DEPLOY ============================== -->
+<section>
+  <span class="eyebrow">Code &amp; hosting</span>
+  <h2><span class="num">02</span>Repository, hosting and domain</h2>
+
+  <h3>Code repository (GitHub)</h3>
+  <table>
+    <tr><th style="width:38mm">Item</th><th>Value</th></tr>
+    <tr><td>Repository</td><td><code>github.com/doonbuildersdigital/doonbuilders</code></td></tr>
+    <tr><td>Owner account</td><td>doonbuildersdigital (GitHub)</td></tr>
+    <tr><td>Production branch</td><td><code>main</code> — every push to <code>main</code> deploys the live website automatically</td></tr>
+    <tr><td>Clone</td><td><code>git clone https://github.com/doonbuildersdigital/doonbuilders.git</code></td></tr>
+  </table>
+
+  <h3>Hosting (Netlify)</h3>
+  <table>
+    <tr><th style="width:38mm">Item</th><th>Value</th></tr>
+    <tr><td>Netlify account</td><td>Doon Builders — doonbuilders.digital@gmail.com</td></tr>
+    <tr><td>Project</td><td><b>doonbuildersofficial</b> — app.netlify.com/projects/doonbuildersofficial</td></tr>
+    <tr><td>Build command</td><td><code>npm run build</code></td></tr>
+    <tr><td>Publish folder</td><td><code>dist</code></td></tr>
+    <tr><td>Auto-deploy</td><td>GitHub push webhook + read-only deploy key on the repository</td></tr>
+    <tr><td>Routing</td><td><code>/* → /index.html (200)</code> in <code>public/_redirects</code>, so every page URL works on refresh</td></tr>
+    <tr><td>Caching</td><td><code>/assets/*</code> cached 1 year (immutable); <code>/images/*</code> cached 7 days — set in <code>netlify.toml</code></td></tr>
+  </table>
+
+  <h3>Domain and DNS (BigRock)</h3>
+  <p>The domain stays on BigRock's nameservers so that Titan Email keeps working. Two records point the website to Netlify:</p>
+  <table>
+    <tr><th style="width:22mm">Type</th><th style="width:38mm">Host</th><th>Value</th><th style="width:28mm">Purpose</th></tr>
+    <tr><td>A</td><td><code>@</code> (doonbuilders.in)</td><td><code>75.2.60.5</code></td><td>Main domain → Netlify</td></tr>
+    <tr><td>CNAME</td><td><code>www</code></td><td><code>doonbuildersofficial.netlify.app</code></td><td>www → Netlify</td></tr>
+    <tr><td>MX</td><td>doonbuilders.in</td><td><code>mx1.titan.email</code>, <code>mx2.titan.email</code></td><td>Email — do not change</td></tr>
+    <tr><td>TXT</td><td>doonbuilders.in</td><td><code>v=spf1 include:spf.titan.email ~all</code></td><td>Email — do not change</td></tr>
+    <tr><td>NS</td><td>doonbuilders.in</td><td><code>dns1–dns4.bigrock.in</code></td><td>Do not change</td></tr>
+  </table>
+  <p>Netlify issues the free SSL certificate (Let's Encrypt) for https automatically once both records resolve.</p>
+</section>
+
+<!-- ============================== 3. TECH STACK ============================== -->
+<section>
+  <span class="eyebrow">Technology</span>
+  <h2><span class="num">03</span>What the website is built with</h2>
+  <p>The site is written in <b>JavaScript (JSX)</b> with <b>React</b>, bundled by <b>Vite</b> and styled with <b>Tailwind CSS</b>. All libraries are open-source and installed from npm.</p>
+  <table>
+    <tr><th style="width:42mm">Package</th><th style="width:20mm">Version</th><th>Used for</th></tr>
+    <tr><td>react, react-dom</td><td>19.3</td><td>User-interface library — every page and section is a React component</td></tr>
+    <tr><td>react-router-dom</td><td>7.18</td><td>Page routing (Home, Projects, Contact …) without full page reloads</td></tr>
+    <tr><td>vite</td><td>8.3</td><td>Development server and production build (Rolldown bundler)</td></tr>
+    <tr><td>@vitejs/plugin-react</td><td>6.1</td><td>React / JSX support and fast refresh in Vite</td></tr>
+    <tr><td>tailwindcss</td><td>3.4</td><td>Utility-first CSS framework — all styling, colours, spacing</td></tr>
+    <tr><td>postcss, autoprefixer</td><td>8.5 / 10.6</td><td>CSS processing and browser prefixes</td></tr>
+    <tr><td>gsap, @gsap/react</td><td>3.15 / 2.1</td><td>Animations: hero entrance, scroll reveals, parallax, counters</td></tr>
+    <tr><td>lenis</td><td>1.3</td><td>Smooth scrolling</td></tr>
+    <tr><td>lucide-react</td><td>1.49</td><td>Line icons (arrows, phone, play/pause, menu …)</td></tr>
+  </table>
+
+  <h3>Tools needed to work on the code</h3>
+  <ul>
+    <li><b>Node.js</b> (LTS) with npm — runs the build</li>
+    <li><b>Git</b> — to clone and push the repository</li>
+    <li>Any code editor (VS Code recommended)</li>
+  </ul>
+
+  <h3>Commands</h3>
+<pre><span class="c"># install dependencies (first time)</span>
+npm install
+
+<span class="c"># run locally at http://localhost:5173</span>
+npm run dev
+
+<span class="c"># production build into dist/</span>
+npm run build
+
+<span class="c"># preview the production build</span>
+npm run preview
+
+<span class="c"># publish a change (Netlify deploys automatically)</span>
+git add -A &amp;&amp; git commit -m "Describe the change" &amp;&amp; git push origin main</pre>
+</section>
+
+<!-- ============================== 4. SOURCE CODE ============================== -->
+<section class="break">
+  <span class="eyebrow">Source code</span>
+  <h2><span class="num">04</span>Source code structure</h2>
+  <p>About 72 source files (~6,700 lines). Content such as phone number, projects and machinery is kept in <code>src/data/</code>, so text can be changed without touching the page layout.</p>
+<pre>doonbuilders/
+├── index.html              <span class="c">page shell, fonts, theme script, meta tags</span>
+├── package.json            <span class="c">dependencies and npm scripts</span>
+├── vite.config.js          <span class="c">build settings, @ → src alias</span>
+├── tailwind.config.js      <span class="c">colours, fonts, shadows, spacing</span>
+├── netlify.toml            <span class="c">Netlify build + cache headers</span>
+├── public/                 <span class="c">files served as-is</span>
+│   ├── images/             <span class="c">archive · placeholder · site · stock</span>
+│   ├── videos/             <span class="c">home hero video (720p / 1080p / 4K) + poster</span>
+│   ├── favicon/  og/       <span class="c">browser icons, social share image</span>
+│   └── _redirects  robots.txt  sitemap.xml  site.webmanifest
+├── src/
+│   ├── main.jsx  App.jsx   <span class="c">app entry and routes</span>
+│   ├── pages/              <span class="c">one file per page (Home, Projects, About …)</span>
+│   ├── sections/home/      <span class="c">13 sections of the home page</span>
+│   ├── components/         <span class="c">29 shared parts: Navbar, Footer, ProjectCard …</span>
+│   ├── layout/             <span class="c">MainLayout (header + footer around pages)</span>
+│   ├── data/               <span class="c">company, projects, machinery, images, SEO …</span>
+│   ├── hooks/  lib/        <span class="c">animation, smooth scroll, theme helpers</span>
+│   ├── services/           <span class="c">contact form submission</span>
+│   └── styles/globals.css  <span class="c">colour tokens, base styles, utilities</span>
+└── documents/              <span class="c">this document and its HTML source</span></pre>
+
+  <h3>Where to change common content</h3>
+  <table>
+    <tr><th style="width:52mm">To change…</th><th>Edit this file</th></tr>
+    <tr><td>Phone, WhatsApp, email, stats, address, social links</td><td><code>src/data/company.js</code></td></tr>
+    <tr><td>Projects (name, status, category, images)</td><td><code>src/data/projects.js</code></td></tr>
+    <tr><td>Machinery list</td><td><code>src/data/machinery.js</code></td></tr>
+    <tr><td>Image files used on each page</td><td><code>src/data/images.js</code></td></tr>
+    <tr><td>Menu links</td><td><code>src/data/navigation.js</code></td></tr>
+    <tr><td>Page titles / descriptions for Google</td><td><code>src/data/seo.js</code></td></tr>
+    <tr><td>Timeline / history</td><td><code>src/data/timeline.js</code>, <code>src/data/archive.js</code></td></tr>
+    <tr><td>Colours and fonts</td><td><code>tailwind.config.js</code>, <code>src/styles/globals.css</code></td></tr>
+  </table>
+</section>
+
+<!-- ============================== 5. COLOURS ============================== -->
+<section class="break">
+  <span class="eyebrow">Design</span>
+  <h2><span class="num">05</span>Colour palette</h2>
+  <p>The brand is built on a deep construction red with near-black and cool greys. Fixed colours look the same in both themes; theme colours switch between light and dark mode.</p>
+
+  <h3>Brand and fixed colours</h3>
+  <div class="swatches">
+    <div class="sw"><i style="background:#C8102E"></i><div><b>Brand Red</b><span>#C8102E</span><small>Buttons, highlights, logo bar, links</small></div></div>
+    <div class="sw"><i style="background:#A50E27"></i><div><b>Brand Deep</b><span>#A50E27</span><small>Button hover, blessing strip</small></div></div>
+    <div class="sw"><i style="background:#E8475B"></i><div><b>Brand Bright</b><span>#E8475B</span><small>Red text on dark backgrounds ("since 1968.")</small></div></div>
+    <div class="sw"><i style="background:#F7D774"></i><div><b>Gold</b><span>#F7D774</span><small>Hindi blessing text on red</small></div></div>
+    <div class="sw"><i style="background:#111214"></i><div><b>Night</b><span>#111214</span><small>Hero background, image overlays</small></div></div>
+    <div class="sw"><i style="background:#181A1D"></i><div><b>Charcoal</b><span>#181A1D</span><small>Dark cards and panels</small></div></div>
+    <div class="sw"><i style="background:#25D366"></i><div><b>WhatsApp Green</b><span>#25D366</span><small>Floating WhatsApp button</small></div></div>
+    <div class="sw"><i style="background:#FFFFFF"></i><div><b>White</b><span>#FFFFFF</span><small>Text on dark / red backgrounds</small></div></div>
+  </div>
+
+  <h3>Theme colours — light and dark mode</h3>
+  <table>
+    <tr><th style="width:26mm">Token</th><th>Used for</th><th style="width:33mm">Light mode</th><th style="width:33mm">Dark mode</th></tr>
+    <tr><td>ink</td><td>Main text</td><td><span class="dot" style="background:#111214"></span>#111214</td><td><span class="dot" style="background:#ECEDF0"></span>#ECEDF0</td></tr>
+    <tr><td>paper</td><td>Page background</td><td><span class="dot" style="background:#F6F7F9"></span>#F6F7F9</td><td><span class="dot" style="background:#0D0E10"></span>#0D0E10</td></tr>
+    <tr><td>surface</td><td>Cards, navbar, panels</td><td><span class="dot" style="background:#FFFFFF"></span>#FFFFFF</td><td><span class="dot" style="background:#181A1D"></span>#181A1D</td></tr>
+    <tr><td>mist</td><td>Image placeholders, soft fills</td><td><span class="dot" style="background:#E6E8EC"></span>#E6E8EC</td><td><span class="dot" style="background:#2C2F34"></span>#2C2F34</td></tr>
+    <tr><td>steel</td><td>Secondary text, labels</td><td><span class="dot" style="background:#777B80"></span>#777B80</td><td><span class="dot" style="background:#9499A0"></span>#9499A0</td></tr>
+    <tr><td>steel-dark</td><td>Body copy, captions</td><td><span class="dot" style="background:#55595E"></span>#55595E</td><td><span class="dot" style="background:#B2B7BE"></span>#B2B7BE</td></tr>
+    <tr><td>line</td><td>Borders, dividers</td><td>rgba(20,20,20,0.12)</td><td>rgba(255,255,255,0.11)</td></tr>
+    <tr><td>brand-text</td><td>Red text</td><td><span class="dot" style="background:#C8102E"></span>#C8102E</td><td><span class="dot" style="background:#F05468"></span>#F05468</td></tr>
+  </table>
+  <p>The theme follows the visitor's device setting by default; the moon/sun button in the header switches it and the choice is remembered.</p>
+
+  <h3>Other design values</h3>
+  <table>
+    <tr><th style="width:42mm">Element</th><th>Value</th></tr>
+    <tr><td>Card shadow</td><td>soft layered shadow; red glow (<code>rgba(200,16,46,0.55)</code>) under red buttons</td></tr>
+    <tr><td>Corner radius</td><td>buttons fully rounded; cards 16–36 px</td></tr>
+    <tr><td>Page width</td><td>max 1440 px; side gutter 20 px (mobile) → 32 → 48 → 80 px (large screens)</td></tr>
+    <tr><td>Header height</td><td>blessing strip 44–52 px + navbar 68–76 px</td></tr>
+    <tr><td>Animation easing</td><td><code>cubic-bezier(0.22, 1, 0.36, 1)</code></td></tr>
+    <tr><td>Label letter-spacing</td><td>0.18em, uppercase</td></tr>
+  </table>
+</section>
+
+<!-- ============================== 6. TYPOGRAPHY ============================== -->
+<section>
+  <span class="eyebrow">Design</span>
+  <h2><span class="num">06</span>Typography</h2>
+  <div class="type-sample">
+    <div class="big">Building India <em>since 1968.</em></div>
+    <p style="margin-top:2mm">Poppins — headings 700–800, body 400–500, buttons and labels 600.</p>
+  </div>
+  <div class="type-sample">
+    <div class="deva">ॐ भगवान श्री टपकेश्वर महादेव जी की कृपा से ॐ</div>
+    <p style="margin-top:2mm">Noto Serif Devanagari 600 / 700 — Hindi blessing strip at the top of every page.</p>
+  </div>
+  <table>
+    <tr><th style="width:42mm">Font</th><th>Weights</th><th>Source</th></tr>
+    <tr><td>Poppins</td><td>400, 500, 600, 700, 800</td><td>Google Fonts (free, Open Font License)</td></tr>
+    <tr><td>Noto Serif Devanagari</td><td>600, 700</td><td>Google Fonts (free, Open Font License)</td></tr>
+    <tr><td>Fallbacks</td><td>—</td><td>system-ui, Segoe UI, Roboto, Arial · Nirmala UI, Mangal</td></tr>
+  </table>
+</section>
+
+<!-- ============================== 7. PAGES ============================== -->
+<section class="break">
+  <span class="eyebrow">Structure</span>
+  <h2><span class="num">07</span>Pages and home page sections</h2>
+  <table>
+    <tr><th style="width:44mm">Page</th><th style="width:40mm">Address</th><th>Content</th></tr>
+    <tr><td>Home</td><td><code>/</code></td><td>Hero video, stats, legacy, projects, capabilities, machinery, gallery, contact call-to-action</td></tr>
+    <tr><td>Projects</td><td><code>/projects</code></td><td>All 16 projects with category filters</td></tr>
+    <tr><td>Project detail</td><td><code>/projects/&lt;name&gt;</code></td><td>One page per project, with next-project link</td></tr>
+    <tr><td>Ongoing Projects</td><td><code>/ongoing-projects</code></td><td>3 projects under execution + real site photos</td></tr>
+    <tr><td>Projects Delivered</td><td><code>/projects-delivered</code></td><td>13 completed projects</td></tr>
+    <tr><td>Experience</td><td><code>/experience</code></td><td>Timeline 1968 – today, original records, sectors (infrastructure, government, private)</td></tr>
+    <tr><td>Machineries</td><td><code>/machineries</code></td><td>Fleet of 7 machinery types with filters</td></tr>
+    <tr><td>About Us</td><td><code>/about</code></td><td>Three generations, original records, company details</td></tr>
+    <tr><td>Contact</td><td><code>/contact</code></td><td>Enquiry form, call, WhatsApp, email</td></tr>
+    <tr><td>Not found</td><td>any other address</td><td>Friendly 404 page</td></tr>
+  </table>
+
+  <h3>Project categories</h3>
+  <p>Roads &amp; Highways (3) · Hospitality (3) · Dams (2) · Irrigation (2) · Bridges · Railways · PWD · Healthcare · Commercial · Project Management — 16 projects in total (13 completed, 3 ongoing).</p>
+
+  <h3>Home page sections (in order of the code)</h3>
+  <p>Hero · Stats · Legacy · Generations · Government Projects · Private Projects · Featured Projects · Capabilities · Showcase · Machinery Preview · Site Gallery · Why Doon · Final CTA.</p>
+
+  <h3>Features on every page</h3>
+  <ul>
+    <li>Fixed header with Hindi blessing strip, menu and "Discuss a Project" button; full-screen mobile menu</li>
+    <li>Floating call and WhatsApp buttons (+91 89230 76963) and back-to-top button</li>
+    <li>Light / dark theme toggle</li>
+    <li>Opening intro animation, scroll animations and smooth scrolling — reduced automatically for visitors who turn off motion in their device settings</li>
+    <li>Image lightbox for galleries and archive records</li>
+    <li>Page titles and descriptions for Google and social sharing; <code>sitemap.xml</code> and <code>robots.txt</code></li>
+  </ul>
+</section>
+
+<!-- ============================== 8. MEDIA ============================== -->
+<section class="break media">
+  <span class="eyebrow">Media</span>
+  <h2><span class="num">08</span>Images, video and credits</h2>
+
+  <h3>Home page video</h3>
+  <table>
+    <tr><th style="width:36mm">File</th><th style="width:28mm">Quality</th><th>Shown on</th></tr>
+    <tr><td><code>hero-construction-720.mp4</code></td><td>1280×720 · 5 MB</td><td>Phones</td></tr>
+    <tr><td><code>hero-construction-1080.mp4</code></td><td>1920×1080 · 11 MB</td><td>Laptops and desktops</td></tr>
+    <tr><td><code>hero-construction-2160.mp4</code></td><td>3840×2160 (4K) · 25 MB</td><td>Large screens (2200 px+) and high-resolution laptops</td></tr>
+    <tr><td><code>hero-construction-poster.webp</code></td><td>1920×1080</td><td>Still frame shown while the video loads</td></tr>
+  </table>
+  <p>14-second muted loop, colour-graded brighter and sharpened. It pauses when scrolled out of view and has a play/pause button.</p>
+
+  <h3>Images</h3>
+  <table>
+    <tr><th style="width:36mm">Folder</th><th>What it holds</th></tr>
+    <tr><td><code>images/site/</code></td><td>Real Doon Builders site photos (rebar inspection, column reinforcement, shuttering, concreting)</td></tr>
+    <tr><td><code>images/archive/</code></td><td>Scans of original company records (Dewas 1976, Tarana 1980, Kolar 1990, Dubai 2023)</td></tr>
+    <tr><td><code>images/placeholder/</code></td><td>Representative photos for project and section images</td></tr>
+    <tr><td><code>images/stock/</code></td><td>Representative machinery and site photos</td></tr>
+  </table>
+  <p>Every image is saved in two modern formats — <b>AVIF</b> and <b>WebP</b> — at 640, 1280 and 1920 px wide (480 / 960 px for portrait site photos). The browser downloads only the size the screen needs. Photos were brightened, colour-boosted and sharpened for display.</p>
+
+  <h3>Credits and licences</h3>
+  <table>
+    <tr><th style="width:36mm">Source</th><th>Used for</th><th style="width:48mm">Licence</th></tr>
+    <tr><td>Pexels #38588308</td><td>Home hero video</td><td>Pexels Licence — free, no credit required</td></tr>
+    <tr><td>Unsplash</td><td>Rebar workers, site engineers, skyscrapers, placeholder photos</td><td>Unsplash Licence — free, no credit required</td></tr>
+    <tr><td>Wikimedia Commons</td><td>Bulldozer, road roller, backhoe, grader, paver, concrete pump, mobile crane, dump truck</td><td>CC0 / public domain</td></tr>
+    <tr><td>Wikimedia Commons</td><td>Gandhi Sagar Dam (photo by LRBurdak)</td><td>CC BY-SA 3.0 — credit required</td></tr>
+    <tr><td>Google Fonts</td><td>Poppins, Noto Serif Devanagari</td><td>SIL Open Font License</td></tr>
+    <tr><td>Lucide</td><td>Icons</td><td>ISC licence</td></tr>
+  </table>
+  <p>Full list with links: <code>public/images/stock/CREDITS.md</code>. Stock images are marked "Representative image" on the site and should be replaced with real Doon Builders photography.</p>
+</section>
+
+<!-- ============================== 9. STATUS ============================== -->
+<section class="break">
+  <span class="eyebrow">Status</span>
+  <h2><span class="num">09</span>Current status and pending items</h2>
+  <table>
+    <tr><th>Item</th><th style="width:26mm">Status</th><th>Note</th></tr>
+    <tr><td>Code on GitHub (doonbuildersdigital/doonbuilders)</td><td><span class="status ok">Done</span></td><td>Branch <code>main</code></td></tr>
+    <tr><td>Netlify deploy + auto-deploy from GitHub</td><td><span class="status ok">Done</span></td><td>Every push to <code>main</code> goes live</td></tr>
+    <tr><td>Site protection removed (public access)</td><td><span class="status ok">Done</span></td><td>—</td></tr>
+    <tr><td>DNS records at BigRock (A + CNAME)</td><td><span class="status ok">Done</span></td><td>Email records untouched</td></tr>
+    <tr><td>SSL certificate (https://doonbuilders.in)</td><td><span class="status wait">In progress</span></td><td>Issued by Netlify once DNS has updated on all BigRock servers</td></tr>
+    <tr><td>Contact form delivery</td><td><span class="status todo">To do</span></td><td>Choose a provider (Web3Forms / FormSubmit / Netlify Forms) and set <code>VITE_CONTACT_PROVIDER</code> and its key in Netlify → Environment variables. Until then the form asks visitors to call or email.</td></tr>
+    <tr><td>Site URL setting</td><td><span class="status todo">To do</span></td><td>Set <code>VITE_SITE_URL=https://doonbuilders.in</code> in Netlify for correct Google / social links</td></tr>
+    <tr><td>Domain in sitemap.xml and robots.txt</td><td><span class="status todo">To do</span></td><td>Currently written as doonbuilders.com — change to doonbuilders.in</td></tr>
+    <tr><td>Email address on the site</td><td><span class="status todo">Check</span></td><td>Site shows support@doonbuilders.com; domain is doonbuilders.in</td></tr>
+    <tr><td>Company details</td><td><span class="status todo">To do</span></td><td>Registered name, office address, Google Maps link, logo, social links — in <code>src/data/company.js</code></td></tr>
+    <tr><td>Real photography</td><td><span class="status todo">To do</span></td><td>Replace representative photos and hero video with Doon Builders' own media; add family portraits</td></tr>
+  </table>
+
+  <div class="foot">
+    Doon Builders — Website Documentation · 14 October 2026 · Source of this document: <code>documents/source/website-documentation.html</code>
+  </div>
+</section>
+
+</body>
+</html>
