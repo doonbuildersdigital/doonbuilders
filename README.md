@@ -150,7 +150,7 @@ Categories: `earthmoving`, `road`, `lifting`, `concrete`, `transport`. `fleetGro
 
 ### Generations and portraits — `src/data/timeline.js`, `src/data/images.js`
 
-The timeline is shared by Home, Experience and About. Put portraits in `public/images/people/` and set them in `portraits` in `images.js`. Until then an architectural placeholder frame is shown — never a stock or AI face.
+The timeline is shared by Home, Experience and About. Put portraits in `public/images/people/` and set them in `portraits` in `images.js`. Until then an architectural placeholder frame is shown — never a stand-in face.
 
 ---
 
