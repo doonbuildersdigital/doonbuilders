@@ -24,3 +24,8 @@ Thumbs.db
 
 # netlify cli
 .netlify
+
+# confidential documents (passwords) - never commit
+documents/private/
+# PDFs are kept locally, not in git
+documents/*.pdf
