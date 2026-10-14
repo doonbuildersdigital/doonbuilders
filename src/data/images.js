@@ -23,7 +23,8 @@ export function responsive(
 const stock = (name, widths) => responsive(`/images/placeholder/${name}`, { widths, placeholder: true });
 
 /** Representative stock library (Unsplash / Wikimedia Commons CC0) — see public/images/stock/CREDITS.md. */
-const library = (name) => responsive(`/images/stock/${name}`, { widths: [640, 1280], placeholder: true });
+const library = (name, widths = DEFAULT_WIDTHS) =>
+  responsive(`/images/stock/${name}`, { widths, placeholder: true });
 
 export const libraryImages = {
   rebarWorkers: library('rebar-workers'),
@@ -33,7 +34,7 @@ export const libraryImages = {
   roadRoller: library('road-roller'),
   backhoeLoader: library('backhoe-loader'),
   motorGrader: library('motor-grader'),
-  asphaltPaver: library('asphalt-paver'),
+  asphaltPaver: library('asphalt-paver', PORTRAIT_WIDTHS), // original is only 1280px wide
   concretePump: library('concrete-pump'),
   mobileCrane: library('mobile-crane'),
   dumpTruck: library('dump-truck'),
@@ -53,15 +54,22 @@ export const sitePhotos = {
 };
 
 /**
- * Home hero background video — representative stock footage (Mixkit #30431, Mixkit Stock Video
- * Free Licence), see public/images/stock/CREDITS.md. Replace with real Doon Builders site footage
- * when available: keep the same file names, or update the paths here.
+ * Home hero background video — representative stock footage (Pexels #38588308, Pexels Licence),
+ * see public/images/stock/CREDITS.md. Replace with real Doon Builders site footage when
+ * available: keep the same file names, or update the paths here.
+ * The browser picks the first matching source: 720p on phones, 4K (2160p) on large or
+ * high-density desktop screens, 1080p everywhere else.
  */
 export const heroVideo = {
   poster: '/videos/hero-construction-poster.webp',
   sources: [
-    { src: '/videos/hero-construction-480.mp4', type: 'video/mp4', media: '(max-width: 767px)' },
-    { src: '/videos/hero-construction-720.mp4', type: 'video/mp4' },
+    { src: '/videos/hero-construction-720.mp4', type: 'video/mp4', media: '(max-width: 767px)' },
+    {
+      src: '/videos/hero-construction-2160.mp4',
+      type: 'video/mp4',
+      media: '(min-width: 2200px), (min-width: 1280px) and (min-resolution: 1.5dppx)',
+    },
+    { src: '/videos/hero-construction-1080.mp4', type: 'video/mp4' },
   ],
   placeholder: true,
 };

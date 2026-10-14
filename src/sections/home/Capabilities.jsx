@@ -31,7 +31,7 @@ function CapabilityCard({ item, index, className }) {
       {/* Readability gradient only — shifts slightly on hover */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-night/85 via-night/20 to-transparent transition-opacity duration-700 ease-arch group-hover:opacity-90"
+        className="absolute inset-0 bg-gradient-to-t from-night/80 via-night/5 to-transparent transition-opacity duration-700 ease-arch group-hover:opacity-90"
       />
 
       <div className="relative flex h-full flex-col justify-between p-6 md:p-9 lg:p-10">

@@ -202,7 +202,7 @@ export default function ProjectDetail() {
                 image={next.heroImage}
                 alt=""
                 sizes="100vw"
-                className="absolute inset-0 opacity-50 transition-opacity duration-700 group-hover:opacity-60"
+                className="absolute inset-0 opacity-65 transition-opacity duration-700 group-hover:opacity-80"
                 imgClassName="card-zoom"
               />
               <div className="relative flex flex-col gap-6 px-6 py-14 md:flex-row md:items-end md:justify-between md:px-12 md:py-20">

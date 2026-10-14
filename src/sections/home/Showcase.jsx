@@ -116,7 +116,7 @@ export default function Showcase() {
                   className="absolute inset-0"
                   imgClassName="card-zoom"
                 />
-                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night/75 via-night/5 to-transparent" />
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent" />
                 {item.real && (
                   <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-surface/90 px-2.5 py-1 text-[10.5px] font-semibold text-ink shadow-card backdrop-blur-sm">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />

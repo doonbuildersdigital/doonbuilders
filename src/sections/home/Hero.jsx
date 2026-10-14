@@ -114,12 +114,13 @@ export default function Hero() {
       </div>
 
       {/* Legibility overlays */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-night/85 via-night/45 to-transparent" />
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-2/5 bg-gradient-to-t from-night/70 via-night/30 to-transparent" />
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-night/70 to-transparent" />
+      {/* Kept light so the footage stays bright; the scrim is darkest only behind the headline. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-night/70 via-night/25 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-2/5 bg-gradient-to-t from-night/50 via-night/15 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-night/45 to-transparent" />
       <div
         aria-hidden="true"
-        className="absolute -bottom-40 -left-40 -z-10 h-[520px] w-[520px] rounded-full bg-brand/25 blur-[120px]"
+        className="absolute -bottom-40 -left-40 -z-10 h-[520px] w-[520px] rounded-full bg-brand/15 blur-[120px]"
       />
       <div
         aria-hidden="true"
@@ -165,7 +166,7 @@ export default function Hero() {
               </span>
             </h1>
 
-            <p data-hero-copy className="mt-6 max-w-xl text-base leading-relaxed text-white/80 md:mt-8 md:text-xl">
+            <p data-hero-copy className="mt-6 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_14px_rgba(0,0,0,0.6)] md:mt-8 md:text-xl">
               {brandMessages.supporting} Roads, bridges, dams and the buildings that followed — delivered by one family
               of builders.
             </p>
@@ -209,7 +210,7 @@ export default function Hero() {
               </a>
               <div className="flex items-center gap-3 md:ml-auto">
                 {heroVideo.placeholder && (
-                  <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.14em] text-white/45">Representative footage</span>
+                  <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.14em] text-white/70 [text-shadow:0_1px_8px_rgba(0,0,0,0.7)]">Representative footage</span>
                 )}
                 <button
                   type="button"

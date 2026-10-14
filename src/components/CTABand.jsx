@@ -35,7 +35,7 @@ export default function CTABand({
           {image ? (
             <>
               <Media image={image} alt={imageAlt} parallax={8} className="absolute inset-0" />
-              <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-night/85 via-night/60 to-night/25" />
+              <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-night/80 via-night/45 to-night/5" />
             </>
           ) : (
             <div

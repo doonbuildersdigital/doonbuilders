@@ -168,7 +168,7 @@ The `<Media>` component then serves the best size and format, lazy-loads below t
 | `public/images/site/` | Real Doon Builders site photographs |
 | `public/images/archive/` | Scans of the original records |
 | `public/images/placeholder/`, `public/images/stock/` | **Temporary** stock photography (credits in `stock/CREDITS.md`). Large images using it show a "Representative image" tag. Replace with real photography before launch, then delete these folders. |
-| `public/videos/` | Home hero video — currently representative stock footage (Mixkit licence) |
+| `public/videos/` | Home hero video — currently representative 4K stock footage (Pexels licence), served at 720p / 1080p / 2160p |
 
 ---
 
