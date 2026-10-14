@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Doon Builders — Original Records (Digital Transcription)</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Cambria, Georgia, 'Times New Roman', serif;
+    color: #1a1a1a;
+    font-size: 10.6pt;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 14mm 20mm 12mm;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* running strip */
+  .strip {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'Segoe UI', Arial, sans-serif; font-size: 7.6pt; letter-spacing: .08em;
+    text-transform: uppercase; color: #6b6f76;
+    border-bottom: 1.4pt solid #c8102e; padding-bottom: 2.2mm; margin-bottom: 7mm;
+  }
+  .strip b { color: #c8102e; font-weight: 700; }
+  .foot {
+    margin-top: auto; padding-top: 2.5mm; border-top: .6pt solid #d6d8dc;
+    display: flex; justify-content: space-between;
+    font-family: 'Segoe UI', Arial, sans-serif; font-size: 7.2pt; color: #7a7e85;
+  }
+
+  /* the transcribed document */
+  .doc { font-family: 'Courier New', Courier, monospace; font-size: 9.9pt; line-height: 1.52; }
+  .lh { text-align: center; font-weight: bold; letter-spacing: .06em; margin-bottom: 5mm; }
+  .lh div { line-height: 1.35; }
+  .row { display: flex; justify-content: space-between; gap: 6mm; }
+  .to { margin: 4mm 0 3mm; }
+  .to .addr { padding-left: 14mm; }
+  .field { display: grid; grid-template-columns: 17mm 1fr; margin: 1.2mm 0; }
+  .field .k { font-weight: bold; }
+  p { margin: 0 0 2.6mm; text-align: justify; }
+  .para { display: grid; grid-template-columns: 9mm 1fr; margin: 0 0 2.6mm; text-align: justify; }
+  .ind { text-indent: 12mm; }
+  .sign { margin: 4mm 0 4mm auto; width: max-content; text-align: center; }
+  .rule { border: 0; border-top: .6pt dashed #9a9ea5; margin: 4mm 0; }
+  .center { text-align: center; }
+  .sep { text-align: center; letter-spacing: .3em; margin: -1mm 0 2mm; color: #555; }
+
+  /* handwritten entries on the original */
+  .hw { font-style: italic; font-family: Cambria, Georgia, serif; font-size: 10.6pt; color: #12305e;
+        border-bottom: .6pt solid #12305e; padding: 0 1mm; }
+  .unc { border-bottom-style: dotted; }
+  .note { color: #6b6f76; font-family: 'Segoe UI', Arial, sans-serif; font-size: 8pt; font-style: normal; }
+  s { text-decoration-thickness: 1pt; }
+
+  /* long documents: tighter type so the whole letter stays on one page */
+  .tight .doc { font-size: 9.1pt; line-height: 1.38; }
+  .tight .para, .tight p { margin-bottom: 1.5mm; }
+  .tight .to { margin: 2.5mm 0 2mm; }
+  .tight .lh { margin-bottom: 3.5mm; }
+  .tight .sign { margin: 2mm 0 2mm auto; }
+  .tight .rule { margin: 2.5mm 0; }
+  .tight .notes { margin-top: 3mm; padding: 2.2mm 3.5mm; }
+
+  .notes {
+    margin-top: 5mm; padding: 3mm 4mm; background: #f4f5f7; border-left: 2pt solid #c8102e;
+    font-family: 'Segoe UI', Arial, sans-serif; font-size: 7.9pt; line-height: 1.45; color: #3b3f45;
+  }
+  .notes b { color: #1a1a1a; }
+  .notes ul { margin: 1mm 0 0; padding-left: 4.5mm; }
+
+  /* cover */
+  .cover h1 { font-family: 'Segoe UI', Arial, sans-serif; font-size: 25pt; line-height: 1.1; margin: 10mm 0 3mm; letter-spacing: -.01em; }
+  .cover h1 span { color: #c8102e; }
+  .cover .sub { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.5pt; color: #4a4e55; margin-bottom: 9mm; }
+  .brand { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 800; letter-spacing: .14em; color: #c8102e; font-size: 11pt;
+           border-left: 2.4pt solid #c8102e; padding-left: 3mm; line-height: 1.2; }
+  .brand small { display: block; font-weight: 600; color: #6b6f76; font-size: 6.8pt; letter-spacing: .3em; margin-top: 1mm; }
+  table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Arial, sans-serif; font-size: 8.6pt; }
+  th { text-align: left; font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; color: #6b6f76;
+       border-bottom: 1pt solid #1a1a1a; padding: 2mm 2mm 2mm 0; }
+  td { border-bottom: .6pt solid #d6d8dc; padding: 2.4mm 2mm 2.4mm 0; vertical-align: top; }
+  td.n { color: #c8102e; font-weight: 700; width: 7mm; }
+  .gen { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+         color: #c8102e; background: #fbe9ec; border-radius: 2mm; padding: .5mm 1.8mm; white-space: nowrap; }
+  h2.sec { font-family: 'Segoe UI', Arial, sans-serif; font-size: 8pt; letter-spacing: .14em; text-transform: uppercase;
+           color: #6b6f76; margin: 9mm 0 2mm; }
+  .legend { font-family: 'Segoe UI', Arial, sans-serif; font-size: 8.6pt; line-height: 1.7; }
+  .legend .hw { font-size: 9pt; }
+
+  /* licence (form) */
+  .lic-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1.4pt solid #b5121b; padding-bottom: 2mm; }
+  .lic-gov { font-family: 'Segoe UI', Arial, sans-serif; color: #b5121b; font-weight: 700; letter-spacing: .08em; font-size: 10pt; }
+  .ar { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; direction: rtl; unicode-bidi: isolate; }
+  .lic-band { margin: 4mm 0 5mm; background: #1d4f7c; color: #fff; text-align: center; padding: 3mm; border-radius: 1mm;
+              font-family: 'Segoe UI', Arial, sans-serif; }
+  .lic-band .t { font-size: 15pt; font-weight: 700; }
+  .lic-band .ar { font-size: 12pt; }
+  .lic table { font-size: 9pt; }
+  .lic td { padding: 2.6mm 2mm 2.6mm 0; }
+  .lic td.k { width: 36mm; font-weight: 700; }
+  .lic td.ar { text-align: right; color: #3b3f45; }
+  .lic .bar { background: #1d4f7c; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 700; font-size: 9pt;
+              padding: 2mm 3mm; margin-top: 6mm; display: flex; justify-content: space-between; }
+  .lic .members th { color: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<section class="page cover">
+  <div class="brand">DOON BUILDERS<small>SINCE 1968</small></div>
+
+  <h1>Original Records<br /><span>Digital Transcription</span></h1>
+  <p class="sub">Typed reproductions of the family’s original work orders, tender correspondence and licence —
+    transcribed word for word from the documents held in the Doon Builders archive.</p>
+
+  <h2 class="sec">Contents</h2>
+  <table>
+    <thead>
+      <tr><th></th><th>Document</th><th>Date</th><th>Issued by</th><th>Value</th><th>Generation</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="n">1</td>
+        <td><b>Work Order</b><br />Construction of 6′ fall, Minor Canal No. 2, P.K. Tank Project</td>
+        <td>18 Mar 1976</td>
+        <td>Executive Engineer, Irrigation Division, Dewas</td>
+        <td>Rs. 4,925</td>
+        <td><span class="gen">First</span></td>
+      </tr>
+      <tr>
+        <td class="n">2</td>
+        <td><b>Work Order</b><br />Overhead water tanks &amp; barbed wire fencing, Irrigation Colony, Tarana</td>
+        <td>23 Oct 1980</td>
+        <td>Executive Engineer, Irrigation S&amp;P Division, Ujjain</td>
+        <td>Rs. 7,500</td>
+        <td><span class="gen">First</span></td>
+      </tr>
+      <tr>
+        <td class="n">3</td>
+        <td><b>Tender Acceptance</b><br />Parapet wall, Kolar Earth Dam, R.D. 0 to 983.5 m</td>
+        <td>1 Jun 1990</td>
+        <td>Executive Engineer, Kolar Project Division No. I, Birpur</td>
+        <td>Rs. 10,34,048</td>
+        <td><span class="gen">First</span></td>
+      </tr>
+      <tr>
+        <td class="n">4</td>
+        <td><b>Professional License</b><br />Kabeer World Project Management Services Est., Dubai</td>
+        <td>10 Apr 2023</td>
+        <td>Government of Dubai</td>
+        <td>—</td>
+        <td><span class="gen">Second</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec">By generation</h2>
+  <table>
+    <tbody>
+      <tr>
+        <td style="width:34mm"><span class="gen">First Generation</span></td>
+        <td>Documents 1–3 are addressed to the founder — as <i>Shri Dilip Singh S/o Pritam Singh</i> (1976),
+          <i>Shri Dilipsingh S/o Shri Pritamsingh</i> (1980) and <i>Shri Dilip Bali</i> (1990) — for irrigation,
+          canal and dam works of the Irrigation Department, Madhya Pradesh.</td>
+      </tr>
+      <tr>
+        <td><span class="gen">Second Generation</span></td>
+        <td>Document 4 names the establishment owner (100% share, Indian national) in Arabic as
+          <span class="ar">كولفير بالى داليب بالى</span> — <i>Kulvir Bali, Dalib (Dilip) Bali</i>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec">How to read this transcription</h2>
+  <div class="legend">
+    <div><span class="hw">Italic, underlined</span> — entered by hand on the original (the documents are typed forms filled in by hand).</div>
+    <div><span class="hw unc">Dotted underline</span> — handwritten; the reading is uncertain.</div>
+    <div>[illegible] · [torn] — text that cannot be read, or is missing where the paper is damaged.</div>
+    <div>Wording, spelling, punctuation and layout follow the original. Only letters that the typewriter clearly
+      mis-struck (e.g. “tae” for “the”) are corrected; these are listed in the notes on each page.</div>
+  </div>
+
+  <div class="foot"><span>Doon Builders · Original Records · Digital Transcription</span><span>Page 1 of 5</span></div>
+</section>
+
+<!-- ============================== 1 · 1976 ============================== -->
+<section class="page tight">
+  <div class="strip"><span><b>Document 1</b> · Work Order · First Generation</span><span>18 March 1976</span></div>
+
+  <div class="doc">
+    <div class="lh"><div>OFFICE OF THE EXECUTIVE ENGINEER,</div><div>IRRIGATION DIVISION, DEWAS.</div></div>
+
+    <div class="row">
+      <span>NO. <span class="hw">1397</span>/<span class="hw unc">APR</span>/SAC/</span>
+      <span>Dewas, dated the <span class="hw">18/3/76</span> / 1976.</span>
+    </div>
+
+    <div class="to">
+      <div>To,</div>
+      <div class="addr">M/s <span class="hw">Shri Dilip Singh S/o Pritam Singh Contr.</span></div>
+      <div class="addr"><span class="hw">Radha Ganj, Dewas</span></div>
+    </div>
+
+    <div class="field"><span class="k">Sub:-</span><span><span class="hw">Const. of 6′ fall at Ch. 11.00 of Minor Canal No. 2 of P.K. Tank project.</span></span></div>
+    <div class="field"><span class="k">Ref:-</span><span>Your Application dated __________/cost of works Rs. <span class="hw">4925/-</span>/-.</span></div>
+    <div class="sep">------------</div>
+
+    <div class="para"><span>1/</span><span class="ind">Having executed the agreement in form "D" on piece work system by you, the above work is hereby awarded to you <s>to</s> as per rates entered in the above Agreement.</span></div>
+    <div class="para"><span>2/</span><span class="ind">The above rates are subject to the relevant notes of relevant chapter of the "Current Schedule of Rates" of Irrigation Upper Chambal Circle, Indore read with the General Instructions of the "Current Schedule of Rates" referred to above.</span></div>
+    <div class="para"><span>3/</span><span class="ind">If any item contingent to the execution of the work as per agreement is got executed for which there is no rates in the above schedule of rates payment for the same will be made at the rate mentioned in the current schedule of rates of Upper Chambal Circle, Indore.</span></div>
+    <div class="para"><span>4/</span><span class="ind">You are requested to start the above work and completed by <span class="hw">One Month</span>.</span></div>
+    <div class="para"><span>5/</span><span>For details of work to be executed the Sub-Divisional Officer, <span class="hw unc">P.K. [illegible] Canal Sub-Dn. Agar</span> may please be contacted. The work is to be executed as per instructions of the above officer under his supervision.</span></div>
+    <div class="para"><span>6/</span><span class="ind">The rates for lead provided in the agreement are for maximum lead but payment will be made to the extent of actual lead in value at the proportionate rate.</span></div>
+
+    <div class="row" style="align-items:flex-end">
+      <span>Encl:-</span>
+      <div class="sign"><span class="note">[signed]</span><br />( S. K. VARMA )<br />EXECUTIVE ENGINEER,<br />IRRIGATION DIVISION, DEWAS.</div>
+    </div>
+
+    <hr class="rule" />
+    <div class="row"><span>ENDT. NO. ______ /SAC/</span><span>Dewas, dated the ___/___/1976</span></div>
+    <p style="margin-top:2mm">Copy is forwarded to the Sub-Divisional Officer :- <span class="hw">P.K. Canal Sub-Dn. Agar</span></p>
+    <div class="para"><span>2/</span><span>He should please note specially the provision para <span class="hw">6</span> of the work order while making payment.</span></div>
+    <div class="para"><span>3/</span><span>The Auditor, <span class="hw">P.K. Canal</span> for information and necessary action and guidance. A copy of the agreement No. <span class="hw unc">178/[illegible]-76</span> pertaining to the work is enclosed for information and [torn]</span></div>
+  </div>
+
+  <div class="notes">
+    <b>Notes on the original</b>
+    <ul>
+      <li>Typed form; the number, date, addressee, subject, cost, completion period, sub-division and agreement number are filled in by hand in ink.</li>
+      <li>The word “to” in para 1 is struck through on the original. A handwritten marginal note in blue ink appears beside paras 3–4.</li>
+      <li>Typewriter mis-strikes corrected: “tae” → the, “sjstem” → system, “notds” → notes, “Cirble” → Circle, “masimum” → maximum, “won order” → work order.</li>
+      <li>The lower edge of the sheet is torn; the end of the last line of the endorsement is missing.</li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>Digital transcription of original document · Irrigation Division, Dewas · No. 1397/SAC</span><span>Page 2 of 5</span></div>
+</section>
+
+<!-- ============================== 2 · 1980 ============================== -->
+<section class="page">
+  <div class="strip"><span><b>Document 2</b> · Work Order · First Generation</span><span>23 October 1980</span></div>
+
+  <div class="doc">
+    <div class="lh"><div>[top of letterhead cut off] ... DIVISION UJJAIN.</div></div>
+
+    <div class="row">
+      <span>No. <span class="hw">975</span> /Ar-T.</span>
+      <span>Ujjain, dtd. 23-10-1980.</span>
+    </div>
+
+    <div class="to">
+      <div>To</div>
+      <div class="addr">Shri Dilipsingh S/o Shri Pritamsingh,</div>
+      <div class="addr">Contractor,</div>
+      <div class="addr">H.NO. 49-Station Road, Dewas.</div>
+    </div>
+
+    <div class="field"><span class="k">Sub:-</span><span>Construction of overhead water tanks in the irrigation quarters and barbed wire fencing in Irrigation Colony at Tarana.</span></div>
+    <div class="field"><span class="k">Ref:-</span><span>Your application dtd. Nil.</span></div>
+
+    <p class="ind" style="margin-top:5mm">Your work order agreement for the above work for Rs. 7500/- has been accepted at the rate of sanctioned by the Superintending Engineer Upper Chambal Circle Indore.</p>
+    <p class="ind">Please start the work and complete it within the period of <s>two</s> <span class="hw">Three</span> months from the date of issue of this work order under the instructions of the Sub Divisional Officer Tarana.</p>
+
+    <div class="sign"><span class="note">[signed, dated <span class="hw" style="font-size:8pt">23/X</span>]</span><br />Executive Engineer<br />Irrigation S&amp;P-Division Ujjain.</div>
+
+    <hr class="rule" />
+    <div class="row"><span>Endt. No. <span class="hw unc">[illegible]</span> /Ar-T.</span><span>Ujjain, dtd. 23-10-1980.</span></div>
+    <p style="margin-top:2mm">Copy forwarded to the Sub Divisional Officer Irrigation Sub Division Tarana for information with ref. to his No. Q-1 dtd. 22-10-1980.</p>
+
+    <div class="sign"><span class="note">[signed]</span><br />Executive Engineer<br />Irrigation S &amp; P Division Ujjain.</div>
+  </div>
+
+  <div class="notes">
+    <b>Notes on the original</b>
+    <ul>
+      <li>Typed letter. The number “975” is written by hand in blue ink. The period “two” months is struck out and “Three” written above it by hand.</li>
+      <li>The top of the sheet (letterhead) is cut off; only “… DIVISION UJJAIN.” is visible.</li>
+      <li>Typewriter mis-strikes corrected: “Constrcution” → Construction, “wirin” → within, “223-10-1980” → 23-10-1980 (endorsement date).</li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>Digital transcription of original document · Irrigation S&amp;P Division, Ujjain · No. 975/Ar-T</span><span>Page 3 of 5</span></div>
+</section>
+
+<!-- ============================== 3 · 1990 ============================== -->
+<section class="page">
+  <div class="strip"><span><b>Document 3</b> · Tender Acceptance · First Generation</span><span>1 June 1990</span></div>
+
+  <div class="doc">
+    <div class="lh"><div>OFFICE OF THE EXECUTIVE ENGINEER</div><div>KOLAR PROJECT DIVISION NO.I. BIRPUR</div><div>DISTT : SEHORE.</div></div>
+
+    <div class="row">
+      <span>Memo No. 1056/SAC/</span><span>Birpur.</span><span>Dated. 1-6-90.</span>
+    </div>
+
+    <div class="to">
+      <div>To,</div>
+      <div class="addr">Shri Dilip Bali, Contractor,</div>
+      <div class="addr">B-153, Shahpura, Bhopal.</div>
+    </div>
+
+    <div class="field"><span class="k">Sub:-</span><span>Tender for the work construction of para-pet wall of Kolar Earth Dam R.D. 0 to 983.5m.</span></div>
+    <div class="field"><span class="k">Ref:-</span><span>Your Quoted Tender on 31-3-90.</span></div>
+
+    <p style="margin-top:4mm">Dear Sir,</p>
+    <p class="ind">With the above subject, cited under reference it is to intimate that your above cited Tender amounting to Rs. 10,34,048.00 (Ten Lakhs Thirty Four Thousand Forty Eight) only at your quoted Rates has been accepted by the Chief Engineer. Please therefore, attend this Office alongwith wanting Documents and Initial-Deposite of Rs. 25,851.00 (Rs. Twenty Five Thousand Eight-Hundred Fifty One) only for executing the agreement.</p>
+    <p class="ind">This is for information and requested for early agreement, so that work may be executed timely.</p>
+
+    <div class="sign">Sd-<br />EXECUTIVE ENGINEER<br />KOLAR PROJECT DN.NO.I. BIRPUR.</div>
+
+    <hr class="rule" />
+    <div class="row"><span>Endt. No. 1057/SAC/</span><span>Birpur.</span><span>Dtd. 1-6-90.</span></div>
+    <p style="margin-top:2mm">Copy is submitted to :- The Superintending Engineer, Kolar project Circle, Bhopal for information please, with reference to his Memo No. 1982/G.2.22 of 89 dtd. 30-5-90.</p>
+
+    <div class="sign">Sd-<br />EXECUTIVE ENGINEER<br />KOLAR PROJECT DN.NO.I. BIRPUR.</div>
+
+    <p class="center" style="margin-top:4mm; font-weight:bold">// TRUE COPY //</p>
+    <div class="sign" style="margin-top:0"><span class="note">[signed]</span><br />Executive Engineer<br />Kolar Project Division No. I, BIRPUR.</div>
+  </div>
+
+  <div class="notes">
+    <b>Notes on the original</b>
+    <ul>
+      <li>Typed letter, attested “// TRUE COPY //” with the Executive Engineer’s signature and office stamp in blue ink.</li>
+      <li>The tender amount “Rs. 10,34,048.00” is circled in blue ink on the original.</li>
+      <li>Spelling as on the original (“para-pet”, “alongwith”, “Initial-Deposite”). Typewriter mis-strikes in “Depposite” and “3075-90” read as Deposite and 30-5-90.</li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>Digital transcription of original document · Kolar Project Division No. I, Birpur · Memo No. 1056/SAC</span><span>Page 4 of 5</span></div>
+</section>
+
+<!-- ============================== 4 · 2023 LICENCE ============================== -->
+<section class="page lic">
+  <div class="strip"><span><b>Document 4</b> · Professional License · Second Generation</span><span>10 April 2023</span></div>
+
+  <div class="lic-head">
+    <div><div class="ar" style="font-size:15pt; color:#b5121b; text-align:left">حكومة دبي</div><div class="lic-gov">GOVERNMENT OF DUBAI</div></div>
+    <div class="note">[QR code]</div>
+  </div>
+
+  <div class="lic-band"><div class="ar">رخصة مهنية</div><div class="t">Professional License</div></div>
+
+  <div class="bar"><span>License Details</span></div>
+  <table>
+    <tbody>
+      <tr><td class="k">License No.</td><td colspan="2"><b>1174457</b></td></tr>
+      <tr><td class="k">Trade Name</td><td>KABEER WORLD PROJECT MANAGEMENT SERVICES EST.</td><td class="ar">مؤسسة كبير وورلد لخدمات إدارة المشاريع</td></tr>
+      <tr><td class="k">Legal Type</td><td>Sole Establishment</td><td class="ar">مؤسسة فردية</td></tr>
+      <tr><td class="k">Issue Date</td><td colspan="2">10/04/2023</td></tr>
+      <tr><td class="k">Expiry Date</td><td>09/04/2024</td><td class="ar">تاريخ الإنتهاء</td></tr>
+      <tr><td class="k">Main License No.</td><td colspan="2">1174457</td></tr>
+      <tr><td class="k">D&amp;B D-U-N-S®</td><td>0</td><td class="ar">الرقم العالمي</td></tr>
+      <tr><td class="k">Register No.</td><td>—</td><td class="ar">رقم السجل التجارى</td></tr>
+      <tr><td class="k">DCCI No.</td><td colspan="2">—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="bar"><span>License Members</span></div>
+  <table class="members">
+    <thead>
+      <tr><th>Share / <span class="ar">الحصص</span></th><th>Role / <span class="ar">الصفة</span></th><th>Nationality / <span class="ar">الجنسية</span></th><th>Name / <span class="ar">الإسم</span></th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>100.00%</td>
+        <td>Est. Owner / <span class="ar">مالك / مؤسسة</span></td>
+        <td>India / <span class="ar">الهند</span></td>
+        <td><span class="ar" style="font-size:11pt">كولفير بالى داليب بالى</span><br /><span class="note">Transliteration: Kulvir Bali, Dalib (Dilip) Bali</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="notes">
+    <b>Notes on the original</b>
+    <ul>
+      <li>Printed licence. Register No. and DCCI No. are blank on the original. The right-hand edge of the page (including the column after “Name”) is cut off in the copy.</li>
+      <li>The member’s name is printed in Arabic only; the English transliteration is added here for reference.</li>
+      <li>The licence was valid from 10/04/2023 to 09/04/2024.</li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>Digital transcription of original document · Government of Dubai · License No. 1174457</span><span>Page 5 of 5</span></div>
+</section>
+
+</body>
+</html>

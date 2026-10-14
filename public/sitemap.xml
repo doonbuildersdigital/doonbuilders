@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Update the domain once confirmed. Add /projects/<slug> entries when real projects are published. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://doonbuilders.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://doonbuilders.com/projects</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://doonbuilders.com/ongoing-projects</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doonbuilders.com/projects/kolar-earth-dam-parapet-wall</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://doonbuilders.com/projects/tarana-irrigation-colony-water-tanks</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://doonbuilders.com/projects/pk-tank-minor-canal-fall</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://doonbuilders.com/projects-delivered</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://doonbuilders.com/experience</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://doonbuilders.com/machineries</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://doonbuilders.com/about</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://doonbuilders.com/contact</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+</urlset>
