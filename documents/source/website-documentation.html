@@ -130,7 +130,7 @@
   <p class="lead">
     This document covers the Doon Builders website: where the code lives, how it is built and deployed,
     the technology and source code used, the full colour palette and typography, the pages, media and
-    content, and what remains to be completed.
+    content, and the current status.
   </p>
   <div class="meta">
     <div><small>Live website</small><strong>doonbuilders.in</strong></div>
@@ -380,7 +380,7 @@ git add -A &amp;&amp; git commit -m "Describe the change" &amp;&amp; git push or
     <li>Light / dark theme toggle</li>
     <li>Opening intro animation, scroll animations and smooth scrolling — reduced automatically for visitors who turn off motion in their device settings</li>
     <li>Image lightbox for galleries and archive records</li>
-    <li>Page titles and descriptions for Google and social sharing; <code>sitemap.xml</code> and <code>robots.txt</code></li>
+    <li>Page titles and descriptions for Google and social sharing</li>
   </ul>
 </section>
 
@@ -419,13 +419,13 @@ git add -A &amp;&amp; git commit -m "Describe the change" &amp;&amp; git push or
     <tr><td>Google Fonts</td><td>Poppins, Noto Serif Devanagari</td><td>SIL Open Font License</td></tr>
     <tr><td>Lucide</td><td>Icons</td><td>ISC licence</td></tr>
   </table>
-  <p>Full list with links: <code>public/images/stock/CREDITS.md</code>. Stock images are marked "Representative image" on the site and should be replaced with real Doon Builders photography.</p>
+  <p>Full list with links: <code>public/images/stock/CREDITS.md</code>. Stock images are marked "Representative image" on the site.</p>
 </section>
 
 <!-- ============================== 9. STATUS ============================== -->
 <section class="break">
   <span class="eyebrow">Status</span>
-  <h2><span class="num">09</span>Current status and pending items</h2>
+  <h2><span class="num">09</span>Current status</h2>
   <table>
     <tr><th>Item</th><th style="width:26mm">Status</th><th>Note</th></tr>
     <tr><td>Code on GitHub (doonbuildersdigital/doonbuilders)</td><td><span class="status ok">Done</span></td><td>Branch <code>main</code></td></tr>
@@ -433,12 +433,6 @@ git add -A &amp;&amp; git commit -m "Describe the change" &amp;&amp; git push or
     <tr><td>Site protection removed (public access)</td><td><span class="status ok">Done</span></td><td>—</td></tr>
     <tr><td>DNS records at BigRock (A + CNAME)</td><td><span class="status ok">Done</span></td><td>Email records untouched</td></tr>
     <tr><td>SSL certificate (https://doonbuilders.in)</td><td><span class="status wait">In progress</span></td><td>Issued by Netlify once DNS has updated on all BigRock servers</td></tr>
-    <tr><td>Contact form delivery</td><td><span class="status todo">To do</span></td><td>Choose a provider (Web3Forms / FormSubmit / Netlify Forms) and set <code>VITE_CONTACT_PROVIDER</code> and its key in Netlify → Environment variables. Until then the form asks visitors to call or email.</td></tr>
-    <tr><td>Site URL setting</td><td><span class="status todo">To do</span></td><td>Set <code>VITE_SITE_URL=https://doonbuilders.in</code> in Netlify for correct Google / social links</td></tr>
-    <tr><td>Domain in sitemap.xml and robots.txt</td><td><span class="status todo">To do</span></td><td>Currently written as doonbuilders.com — change to doonbuilders.in</td></tr>
-    <tr><td>Email address on the site</td><td><span class="status todo">Check</span></td><td>Site shows support@doonbuilders.com; domain is doonbuilders.in</td></tr>
-    <tr><td>Company details</td><td><span class="status todo">To do</span></td><td>Registered name, office address, Google Maps link, logo, social links — in <code>src/data/company.js</code></td></tr>
-    <tr><td>Real photography</td><td><span class="status todo">To do</span></td><td>Replace representative photos and hero video with Doon Builders' own media; add family portraits</td></tr>
   </table>
 
   <div class="foot">
